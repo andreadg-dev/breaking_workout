@@ -1,0 +1,246 @@
+:root {
+  --main-font-family: "Rubik";
+  --main-font-color: #a6accd;
+  --main-background-color: #0b0f14;
+  --main-font-size: 14px;
+  --border: rgba(255, 255, 255, 0.4);
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/*===========================*/
+/*Main*/
+/*===========================*/
+html {
+  min-height: 100%;
+  background:
+    radial-gradient(
+      1200px 700px at 20% 10%,
+      rgba(122, 162, 255, 0.18),
+      transparent 50%
+    ),
+    radial-gradient(
+      900px 600px at 80% 0%,
+      rgba(45, 212, 191, 0.12),
+      transparent 55%
+    ),
+    var(--main-background-color);
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* keeps it consistent while scrolling */
+}
+
+body {
+  color: var(--main-font-color);
+  font-family: var(--main-font-family);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  padding-top: 1em;
+  background-color: transparent;
+  font-size: var(--main-font-size);
+}
+
+#root {
+  margin: 0 auto;
+  padding: 14px 16px 60px;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+}
+
+.flex-column {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.separator {
+  border: 1px solid;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+/*===========================*/
+/*Moves config card*/
+/*===========================*/
+#workout_config_card {
+  width: 80vw;
+  margin: auto;
+}
+
+/*===========================*/
+/*Moves config header*/
+/*===========================*/
+#workout_config_title {
+  margin: 0;
+  padding: 12px 10px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(231, 238, 252, 0.92);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.11);
+  text-align: center;
+  border-top-left-radius: var(--radius);
+  border-top-right-radius: var(--radius);
+  border-bottom: none;
+}
+
+#workout_config {
+  border: 1px solid var(--border);
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 7px 10px;
+}
+
+.workout_config_pill {
+  width: 8rem;
+}
+
+.config_label {
+  width: 4rem;
+  font-weight: bold;
+}
+
+.config_value_pill {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+#workout_config_info {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem;
+  justify-content: space-evenly;
+}
+
+#workout_config_activerest {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0.8rem;
+  justify-content: space-evenly;
+}
+
+.plusminus_btns {
+  justify-content: space-evenly;
+  border: 1px solid;
+  border-radius: var(--radius);
+  background-color: #1e3250;
+}
+
+.plusbtn {
+  padding-left: 15px;
+}
+
+.minusbtn {
+  padding-right: 15px;
+}
+
+/*===========================*/
+/*Moves labels*/
+/*===========================*/
+#moves_selection {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.move_label {
+  display: flex;
+  gap: 1rem;
+  border: 1px solid;
+  padding: 7px 10px;
+  width: 16rem;
+  justify-content: space-evenly;
+  border-radius: 50px;
+  background: rgba(18, 25, 38, 0.6);
+  flex: 1 1 calc(50% - 0.75rem);
+}
+
+.move_label:hover {
+  border-color: rgba(45, 212, 191, 0.55);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+}
+
+div.okselection {
+  background-color: rgba(45, 212, 190, 0.2);
+}
+
+.noselection {
+  background-color: rgba(255, 187, 0, 0.2);
+}
+
+div.noselection:hover {
+  border-color: rgba(255, 174, 0, 0.644);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+}
+
+.move_dropdown {
+  outline: none;
+  background-color: transparent;
+  color: var(--main-font-color);
+  border: none;
+  width: 10rem;
+}
+
+.move_dropdown:focus {
+  background-color: rgba(18, 25, 38, 0.6);
+}
+
+.move_right {
+  display: flex;
+  gap: 1rem;
+}
+
+/*===========================*/
+/*Form buttons styling*/
+/*===========================*/
+
+#form_buttons {
+  margin: auto;
+}
+
+/*===========================*/
+/*Footer styling*/
+/*===========================*/
+#paddingCopyright {
+  display: block;
+  padding: 20px;
+  height: 60px;
+  width: 100%;
+  background-color: transparent;
+}
+
+#copyright {
+  background-color: rgb(32, 32, 32, 0.1);
+  border-top: 1px solid rgb(63, 63, 63);
+  text-align: center;
+  padding: 20px;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  height: 60px;
+  width: 100%;
+  color: white;
+}
+
+#copyright a {
+  text-decoration: none;
+}

@@ -1,16 +1,19 @@
 :root {
-  --main-font-family: "Rubik";
+  --main-font-family: "Fira Sans", "Rubik";
   --main-font-color: #a6accd;
   --main-background-color: #0b0f14;
   --main-font-size: 14px;
   --border: rgba(255, 255, 255, 0.4);
   --radius: 14px;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --separator: 1px solid #ffffff29;
 }
 
-/*===========================*/
-/*Main*/
-/*===========================*/
+/*================================*/
+/*================================*/
+/* GENERAL */
+/*================================*/
+/*================================*/
 html {
   min-height: 100%;
   background:
@@ -63,12 +66,91 @@ body {
 }
 
 .separator {
-  border: 1px solid;
+  border: var(--separator);
 }
 
 .pointer {
   cursor: pointer;
 }
+
+.my_btn {
+  display: flex;
+  gap: 1rem;
+  border: 1px solid;
+  padding: 7px 10px;
+  width: 16rem;
+  justify-content: center;
+  border-radius: 50px;
+}
+
+/*================================*/
+/*================================*/
+/* IMPORT WORKOUT SCREEN */
+/*================================*/
+/*================================*/
+
+#import_screen_wrapper {
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+  border: var(--separator);
+  padding: 2rem;
+  border-radius: var(--radius);
+  background-color: #4e4c4c2b;
+}
+
+#workout_string_lbl {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+#workout_string {
+  width: 100%;
+  cursor: text;
+  padding: 1px 0px;
+  background-color: rgb(33, 37, 41);
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.import_screen_top {
+  padding-bottom: 3rem;
+  border-bottom: var(--separator);
+}
+
+.import_screen_bottom {
+  padding-top: 2rem;
+  margin: auto;
+}
+
+#import_workout_btn {
+  background-color: rgb(3, 155, 100);
+  color: white;
+  border: 0;
+}
+
+#import_workout_btn:hover {
+  border-color: rgba(3, 155, 100, 0.644);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+}
+
+#loadcreate_workout_btn {
+  background-color: rgb(0, 149, 255);
+  color: white;
+  border: 0;
+}
+
+#loadcreate_workout_btn:hover {
+  border-color: rgba(0, 149, 255, 0.644);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+}
+
+/*================================*/
+/*================================*/
+/* MOVE SELECTION SCREEN */
+/*================================*/
+/*================================*/
 
 /*===========================*/
 /*Moves config card*/
@@ -76,6 +158,7 @@ body {
 #workout_config_card {
   width: 80vw;
   margin: auto;
+  background-color: #4e4c4c2b;
 }
 
 /*===========================*/
@@ -93,6 +176,7 @@ body {
   border-top-left-radius: var(--radius);
   border-top-right-radius: var(--radius);
   border-bottom: none;
+  font-weight: bold;
 }
 
 #workout_config {
@@ -123,7 +207,7 @@ body {
   flex-wrap: nowrap;
   flex-direction: row;
   gap: 1rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--separator);
   padding: 0.8rem;
   justify-content: space-evenly;
 }
@@ -218,19 +302,32 @@ div.noselection:hover {
 }
 
 .add_btn {
-  display: flex;
-  gap: 1rem;
-  border: 1px solid;
-  padding: 7px 10px;
-  width: 16rem;
-  justify-content: center;
-  border-radius: 50px;
   background: rgba(18, 25, 38, 0.6);
 }
 
 /*===========================*/
-/*Footer styling*/
+/*Draggable styling*/
 /*===========================*/
+.drag-ghost {
+  opacity: 0.4;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: var(--border);
+  user-select: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/*================================*/
+/*================================*/
+/* FOOTER */
+/*================================*/
+/*================================*/
+
 #paddingCopyright {
   display: block;
   padding: 20px;
@@ -254,21 +351,4 @@ div.noselection:hover {
 
 #copyright a {
   text-decoration: none;
-}
-
-/*===========================*/
-/*Draggable styling*/
-/*===========================*/
-.drag-ghost {
-  opacity: 0.4;
-}
-
-.drag-handle {
-  cursor: grab;
-  color: var(--border);
-  user-select: none;
-}
-
-.drag-handle:active {
-  cursor: grabbing;
 }

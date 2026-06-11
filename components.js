@@ -14,7 +14,10 @@ const PLUS_CIRCLE_FILL = `<svg xmlns="http://www.w3.org/2000/svg" width="16" hei
 const SEPARATOR = `<div class="separator"></div>`;
 
 const MOVE_LABEL = `<div class="move_label noselection">
-    <div class="remove_move_label pointer" onClick="removeMoveLabel(this); updateWorkoutSettings(calculateTotalExerciseCount())">${BIN_ICON}</div>
+    <div class="flex">
+        <div class="drag-handle" title="Drag to reorder">⠿</div>
+        <div class="remove_move_label pointer" onClick="removeMoveLabel(this); updateWorkoutSettings(calculateTotalExerciseCount())">${BIN_ICON}</div>
+    </div>
     <div class="move_left">
         <div class="moves-dropdown">{{movesdropdown}}</div>
     </div>
@@ -25,7 +28,7 @@ const MOVE_LABEL = `<div class="move_label noselection">
     </div>
 </div>`;
 
-const ADD_BUTTON = `<div class="move_label add_btn pointer" onClick="addMoveLabel(this)">+</div>`;
+const ADD_BUTTON = `<div class="add_btn pointer" onClick="addMoveLabel(this)">+</div>`;
 
 const PLUSMINUS_BTNS = `<div class="plusminus_btns flex">
     <div class="plusbtn pointer" onClick="updateActiveRestTime(this, 'plus')">+</div>

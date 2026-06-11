@@ -159,7 +159,7 @@ function addMoveLabel(element) {
 
 // Remove move label when clicking on the bin button
 function removeMoveLabel(element) {
-  $(element).parent(".move_label").remove();
+  $(element).closest(".move_label").remove();
 }
 
 // Functions to increase or decrease the corresponding move count
@@ -322,4 +322,13 @@ function updateActiveRestTime(element, plusorminus) {
       }
     }
   }
+}
+
+// Function that allows to sort drag moves in the move_selection section
+function enableDraggableBehaviour() {
+  Sortable.create(document.getElementById("moves_selection"), {
+    animation: 150,
+    handle: ".drag-handle", // optional: restrict drag to a handle
+    ghostClass: "drag-ghost",
+  });
 }

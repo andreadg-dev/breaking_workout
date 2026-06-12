@@ -8,6 +8,57 @@ const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {
 
 const STORAGE_KEY = "breakinghiit_1rm_v1";
 
+function saveCurrentState() {
+  let workout = {
+    secondsActive: 0,
+    secondsRest: 0,
+    totalExercisesCount: 0,
+    totalDurationInSecs: 0,
+    exercises: [],
+  };
+
+  workout.secondsActive = Number($("#seconds_active").html());
+  workout.secondsRest = Number($("#seconds_rest").html());
+  workout.totalExercisesCount = Number($("#total_count").html());
+  workout.totalDurationInSecs = Number($("#total_duration_hidden").html());
+
+  let filteredMoves = $(".move_label")
+    .find(".move_dropdown")
+    .filter(function () {
+      return $(this).val() !== null && $(this).val().trim() !== "";
+    });
+
+  if (filteredMoves.length < 1) {
+    return;
+  }
+
+  filteredMoves.each((index, item) => {
+    let exerciseValue = $(item)
+      .closest(".move_label")
+      .find(".move_dropdown")
+      .val()
+      .split("-")[0];
+
+    let exercise = MOVEMENTS.filter((item) => {
+      return item.id === exerciseValue;
+    });
+
+    let exerciseCount = $(item)
+      .closest(".move_label")
+      .find(".move_count")
+      .html();
+
+    workout.exercises.push({
+      id: index,
+      exerciseId: exerciseValue,
+      exerciseName: exercise[0].name,
+      count: Number(exerciseCount),
+    });
+  });
+
+  return JSON.stringify(workout);
+}
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
@@ -25,7 +76,7 @@ function goToMovesSelectionScreen() {
 //================================
 // Create moves dropdown
 function generateMovesDropdown() {
-  let move_options = MOVEMENTS_SORTED.map((move) => {
+  /*   let move_options = MOVEMENTS_SORTED.map((move) => {
     let move_value = move.name
       .toLowerCase()
       .replaceAll(" ", "_")
@@ -36,6 +87,30 @@ function generateMovesDropdown() {
   return `<select name="movements" class="move_dropdown pointer">
             <option value="" selected>--Choose an option--</option>
             ${move_options.join("")}
+          </select>`; */
+
+  // Group moves by category
+  const grouped = MOVEMENTS_SORTED.reduce((acc, move) => {
+    (acc[move.category] = acc[move.category] || []).push(move);
+    return acc;
+  }, {});
+
+  const optgroups = Object.entries(grouped).map(([category, moves]) => {
+    const options = moves
+      .map((move) => {
+        let move_value = move.name
+          .toLowerCase()
+          .replaceAll(" ", "_")
+          .replaceAll("/", "");
+        return `<option value="${move.id}-${move_value}">${move.name}</option>`;
+      })
+      .join("");
+    return `<optgroup label="${category}">${options}</optgroup>`;
+  });
+
+  return `<select name="movements" class="move_dropdown pointer">
+            <option value="" selected>--Choose an option--</option>
+            ${optgroups.join("")}
           </select>`;
 }
 
@@ -81,11 +156,15 @@ function updateWorkoutSettings(
 ) {
   const totalExerCountElement = $("#total_count");
   const totalDurationElement = $("#total_duration");
+  const totalDurationHiddenElement = $("#total_duration_hidden");
   const totalSecsActiveElement = $("#seconds_active");
   const totalSecsRestElement = $("#seconds_rest");
 
   totalExercisesCount && totalExerCountElement.html(totalExercisesCount);
-  totalDuration && totalDurationElement.html(totalDuration);
+  totalDuration &&
+    totalDurationElement.html(totalDuration.totalDurationDisplay);
+  totalDuration &&
+    totalDurationHiddenElement.html(totalDuration.totalDurationHidden);
   secondsActive && totalSecsActiveElement.html(secondsActive);
   secondsRest && totalSecsRestElement.html(secondsRest);
 }
@@ -141,9 +220,15 @@ function calculateTotalWorkoutDuration() {
     (Number(exerciseDurationInSec.html()) + Number(restDurationInSec.html()));
 
   if (totalWorkoutDurationInSec < 60) {
-    return `0 ' ${totalWorkoutDurationInSec} "`;
+    return {
+      totalDurationHidden: totalWorkoutDurationInSec,
+      totalDurationDisplay: `0 ' ${totalWorkoutDurationInSec} "`,
+    };
   } else {
-    return `${Math.trunc(totalWorkoutDurationInSec / 60)} ' ${totalWorkoutDurationInSec % 60} "`;
+    return {
+      totalDurationHidden: totalWorkoutDurationInSec,
+      totalDurationDisplay: `${Math.trunc(totalWorkoutDurationInSec / 60)} ' ${totalWorkoutDurationInSec % 60} "`,
+    };
   }
 }
 

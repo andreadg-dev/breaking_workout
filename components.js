@@ -96,6 +96,7 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
                 <div class="config_label" aria-label="Total workout duration" title="Total workout duration">${CLOCK_ICON}</div>
                 <div class="config_value_pill">
                     <div id="total_duration">0 ' 0 "</div>
+                    <div id="total_duration_hidden"></div>
                 </div>
             </div>
         </div>

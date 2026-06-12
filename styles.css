@@ -44,12 +44,13 @@ body {
 
 #root {
   margin: 0 auto;
-  padding: 14px 16px 60px;
+  padding: 14px 16px 0;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
   flex-wrap: wrap;
   flex-direction: column;
+  min-height: 90vh;
 }
 
 .flex {
@@ -236,6 +237,10 @@ body {
   padding-right: 15px;
 }
 
+#total_duration_hidden {
+  display: none;
+}
+
 /*===========================*/
 /*Moves labels*/
 /*===========================*/
@@ -293,12 +298,26 @@ div.noselection:hover {
   gap: 1rem;
 }
 
+.move_dropdown optgroup {
+  background-color: #1e3250;
+  color: #a6accd;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.move_dropdown optgroup option {
+  background-color: rgb(33, 37, 41);
+  font-weight: normal;
+  padding-left: 1rem;
+}
+
 /*===========================*/
 /*Form buttons styling*/
 /*===========================*/
 
 #form_buttons {
   margin: auto;
+  margin-bottom: 70px;
 }
 
 .add_btn {
@@ -341,12 +360,13 @@ div.noselection:hover {
   border-top: 1px solid rgb(63, 63, 63);
   text-align: center;
   padding: 20px;
-  position: fixed;
-  left: 0px;
-  bottom: 0px;
   height: 60px;
   width: 100%;
   color: white;
+  position: sticky; /* ← */
+  bottom: 0;
+  /*   left: 0px;
+  bottom: 0px; */
 }
 
 #copyright a {

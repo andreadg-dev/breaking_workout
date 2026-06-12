@@ -69,18 +69,18 @@ const MOVE_LABEL = `<div class="move_label noselection">
         <div class="moves-dropdown">{{movesdropdown}}</div>
     </div>
     <div class="move_right">
-        <span class="increase_move_count_btn pointer" onClick="increaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount())">${PLUS_CIRCLE_FILL}</span>
+        <span class="increase_move_count_btn pointer" onClick="increaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${PLUS_CIRCLE_FILL}</span>
         <span class="move_count">1</span>
-        <span class="decrease_move_count_btn pointer" onClick="decreaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount())">${MINUS_CIRCLE_FILL}</span>
+        <span class="decrease_move_count_btn pointer" onClick="decreaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${MINUS_CIRCLE_FILL}</span>
     </div>
 </div>`;
 
 const ADD_BUTTON = `<div class="add_btn my_btn pointer" onClick="addMoveLabel(this)">+</div>`;
 
 const PLUSMINUS_BTNS = `<div class="plusminus_btns flex">
-    <div class="plusbtn pointer" onClick="updateActiveRestTime(this, 'plus')">+</div>
+    <div class="plusbtn pointer" onClick="updateActiveRestTime(this, 'plus'); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">+</div>
     ${SEPARATOR}
-    <div class="minusbtn pointer" onClick="updateActiveRestTime(this, 'minus')">-</div>
+    <div class="minusbtn pointer" onClick="updateActiveRestTime(this, 'minus'); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">-</div>
 </div>`;
 
 const WORKOUT_CONFIG = `<div id="workout_config_card">
@@ -95,8 +95,7 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
             <div id="total_session_duration" class="workout_config_pill flex">
                 <div class="config_label" aria-label="Total workout duration" title="Total workout duration">${CLOCK_ICON}</div>
                 <div class="config_value_pill">
-                    <div id="total_duration">0</div>
-                    <div>"</div>
+                    <div id="total_duration">0 ' 0 "</div>
                 </div>
             </div>
         </div>

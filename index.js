@@ -134,13 +134,17 @@ function calculateTotalExerciseCount() {
 function calculateTotalWorkoutDuration() {
   let exercisesTotalCount = $("#total_count");
   let exerciseDurationInSec = $("#seconds_active");
-  let restDurationInSec = $("seconds_rest");
+  let restDurationInSec = $("#seconds_rest");
 
   let totalWorkoutDurationInSec =
     Number(exercisesTotalCount.html()) *
     (Number(exerciseDurationInSec.html()) + Number(restDurationInSec.html()));
 
-  return totalWorkoutDurationInSec;
+  if (totalWorkoutDurationInSec < 60) {
+    return `0 ' ${totalWorkoutDurationInSec} "`;
+  } else {
+    return `${Math.trunc(totalWorkoutDurationInSec / 60)} ' ${totalWorkoutDurationInSec % 60} "`;
+  }
 }
 
 // Generic function to increase or decrease active or rest time
@@ -263,6 +267,7 @@ function MovesSelectionScreen() {
   $(document).on("change", ".move_dropdown", function () {
     updateSelectionStyling(this);
     updateWorkoutSettings(calculateTotalExerciseCount());
+    updateWorkoutSettings(null, calculateTotalWorkoutDuration());
   });
 }
 

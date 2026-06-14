@@ -105,3 +105,30 @@ const MOVEMENTS = [
       "A dynamic upside-down pose where the hips are high and legs are bent or tucked, often supported by shoulders or hands.",
   },
 ];
+
+const SESSION_SAMPLE = {
+  secondsActive: 15,
+  secondsRest: 10,
+  totalExercisesCount: 6,
+  totalDurationInSecs: 150,
+  exercises: [
+    {
+      id: 0,
+      exerciseId: "6d2e8f3a",
+      exerciseName: "Baby Love",
+      count: 2,
+    },
+    {
+      id: 1,
+      exerciseId: "9f3e1b7c",
+      exerciseName: "Baby Freeze",
+      count: 3,
+    },
+    {
+      id: 2,
+      exerciseId: "8f3b2a1c",
+      exerciseName: "Indian Step",
+      count: 1,
+    },
+  ],
+};

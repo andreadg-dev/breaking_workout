@@ -76,6 +76,8 @@ const MOVE_LABEL = `<div class="move_label noselection">
 </div>`;
 
 const ADD_BUTTON = `<div class="add_btn my_btn pointer" onClick="addMoveLabel(this)">+</div>`;
+const PLAY_BUTTON = `<div class="add_btn my_btn pointer" onClick="PlayScreen()">PLAY</div>`;
+const FORM_BUTTONS = `<div class="flex-column">${ADD_BUTTON}${PLAY_BUTTON}</div>`;
 
 const PLUSMINUS_BTNS = `<div class="plusminus_btns flex">
     <div class="plusbtn pointer" onClick="updateActiveRestTime(this, 'plus'); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">+</div>
@@ -123,5 +125,16 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
                 ${PLUSMINUS_BTNS}
             </div>
         </div>
+    </div>
+</div>`;
+
+//================================
+// PLAY SCREEN
+//================================
+
+const WORKOUT_PLAYCARD = `<div id="workout_play_card" class="flex-column">
+    <div id="workout_playcard_title"></div>
+    <div id="workout_playcard_content" class="flex">
+        <div id="timeBasedExercisesSeconds">--</div>
     </div>
 </div>`;

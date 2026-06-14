@@ -343,6 +343,31 @@ div.noselection:hover {
 
 /*================================*/
 /*================================*/
+/* PLAY SCREEN */
+/*================================*/
+/*================================*/
+#workout_play_card {
+  border: 1px solid;
+  padding: 20px;
+  margin: auto;
+  border-radius: var(--radius);
+  background-color: #d1cdcd0f;
+  width: 80%;
+}
+
+#workout_playcard_title {
+  border-bottom: 1px solid;
+  font-size: 2rem;
+  text-align: center;
+}
+
+#workout_playcard_content {
+  font-size: 6rem;
+  margin: auto;
+}
+
+/*================================*/
+/*================================*/
 /* FOOTER */
 /*================================*/
 /*================================*/

@@ -56,7 +56,7 @@ function saveCurrentState() {
     });
   });
 
-  return JSON.stringify(workout);
+  return workout;
 }
 
 //================================
@@ -343,7 +343,7 @@ function MovesSelectionScreen() {
   // Depending on the current state loaded in the previous step, the corresponding content is appended
   currentState
     ? $("#moves_selection").append(getMovesComponent())
-    : $("#form_buttons").append(ADD_BUTTON);
+    : $("#form_buttons").append(FORM_BUTTONS);
 
   // Enables the move labels draggable behaviour
   enableDraggableBehaviour();
@@ -354,6 +354,170 @@ function MovesSelectionScreen() {
     updateWorkoutSettings(calculateTotalExerciseCount());
     updateWorkoutSettings(null, calculateTotalWorkoutDuration());
   });
+}
+
+//================================
+// PLAY SCREEN FUNCTIONS
+//================================
+
+function PlayScreen() {
+  let workoutSession = saveCurrentState();
+  $("#root").empty();
+  $("#root").append(WORKOUT_PLAYCARD);
+  startWorkoutSession(workoutSession);
+}
+
+async function manageWakeLock(action) {
+  if (action === "request_lock") {
+    try {
+      wakeLock2 = await navigator.wakeLock.request("screen");
+      wakeLock2.addEventListener("release", () => {
+        console.log("Wake Lock was released (event listener)");
+      });
+      console.log("Wake Lock acquired");
+      return wakeLock2;
+    } catch (err) {
+      console.error("Error acquiring Wake Lock:", err);
+      // Handle the error (e.g., the browser doesn't support it)
+      return; // Stop execution if Wake Lock acquisition fails
+    }
+  }
+
+  if (action === "request_release") {
+    if (wakeLock2) {
+      // Check if wakeLock2 is not null before releasing
+      try {
+        await wakeLock2.release(); // Use await for proper error handling
+        wakeLock2 = null;
+        console.log("Wake Lock released");
+      } catch (err) {
+        console.error("Error releasing Wake Lock:", err);
+        // Handle the error (e.g., log it or show a message)
+      }
+    }
+  }
+}
+
+// Function to play the breakbeat or to pause it in a fade out
+// The breakbeat object has to be declare outside the function not to play several tracks at the same time
+const breakbeatAudio = new Audio("./audio/funky_deegeeace.mp3");
+
+function breakbeat(action) {
+  if (action === "play") {
+    breakbeatAudio.volume = 1;
+    breakbeatAudio.currentTime = 0;
+    breakbeatAudio.play();
+  }
+  if (action === "pause") {
+    const fadeInterval = setInterval(() => {
+      if (breakbeatAudio.volume > 0.05) {
+        breakbeatAudio.volume = Math.max(0, breakbeatAudio.volume - 0.05);
+      } else {
+        breakbeatAudio.volume = 0;
+        breakbeatAudio.pause();
+        clearInterval(fadeInterval);
+      }
+    }, 50);
+  }
+}
+
+// WORK IN PROGRESS //
+countdownInterval = null;
+async function newCountDownSeconds(
+  seconds,
+  htmlElement,
+  digitsColour,
+  setTitleElement,
+  setTitle,
+) {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+
+  return new Promise((resolve) => {
+    countdownInterval = setInterval(() => {
+      if (seconds === 0) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+        resolve();
+        return;
+      }
+
+      seconds--;
+      htmlElement.text(seconds.toString());
+      htmlElement.css("color", digitsColour);
+      setTitleElement.text(setTitle);
+      setTitleElement.css("color", digitsColour);
+    }, 1000);
+  });
+}
+
+async function startWorkoutSession(session) {
+  let timeBasedExercisesTimer = $("#timeBasedExercisesSeconds");
+  let setTimeSeconds = session.secondsActive;
+  let numOfExercises = session.totalExercisesCount;
+  let restTimeSeconds = session.secondsRest;
+  let sessionExercises = session.exercises;
+  let setTitleElement = $("#workout_playcard_title");
+  arrayExercises = [];
+
+  // Rest object
+  let restObject = {
+    id: 0,
+    exerciseId: "",
+    exerciseName: "REST",
+    count: 1,
+    duration: restTimeSeconds,
+  };
+
+  // Clones exercises as many times is their count and add a rest item in between
+  sessionExercises
+    .flatMap((exercise) =>
+      Array.from({ length: exercise.count }, () => structuredClone(exercise)),
+    )
+    .forEach((exercise, index) => {
+      exercise.id = arrayExercises.length;
+      exercise.duration = setTimeSeconds;
+
+      arrayExercises.push(exercise);
+      arrayExercises.push({
+        ...restObject,
+        id: arrayExercises.length,
+        exerciseId: `rest-${String(arrayExercises.length).padStart(6, "0")}`,
+      });
+    });
+
+  // Request browser wake lock to keep the browser page focused so that it does not turn on for inactivity
+  let wakeLock2 = manageWakeLock("request_lock");
+
+  // For loop to loop through each exercise and setting color and title of the countdown
+  let setCounter = 0;
+  for (const [index, exercise] of arrayExercises.entries()) {
+    if (index % 2 === 0) {
+      setCounter++;
+      breakbeat("play");
+    } else {
+      breakbeat("pause");
+    }
+    let color = index % 2 === 0 ? "#00bfff94" : "#ffb10094";
+    let setTitle =
+      index % 2 === 0 ? `${exercise.exerciseName} (ROUND ${index})` : "REST";
+    if (index === arrayExercises.length - 1) {
+      setTitle = `${exercise.exerciseName} (LAST ROUND)`;
+    }
+
+    await newCountDownSeconds(
+      exercise.duration,
+      timeBasedExercisesTimer,
+      color,
+      setTitleElement,
+      setTitle,
+    );
+  }
+
+  // Request browser wake lock release after the session is over
+  manageWakeLock("request_release");
 }
 
 //================================

@@ -59,6 +59,19 @@ function saveCurrentState() {
   return workout;
 }
 
+function newOverlayScreen(header, content) {
+  let newOverlayComponent = OVERLAY_COMPONENT.replace(
+    "{{header}}",
+    header,
+  ).replace("{{content}}", content);
+
+  $("#root").append(newOverlayComponent);
+}
+
+function closeOverlayScreen(element) {
+  $(element).closest("#overlay_screen").remove();
+}
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
@@ -141,7 +154,8 @@ function decreaseMoveCount(element) {
   let current_count = Number(countElement.html()) || 1;
 
   if (current_count <= 1) {
-    window.alert("You cannot choose a number less than 1");
+    //window.alert("You cannot choose a number less than 1");
+    newOverlayScreen("Error", "You cannot choose a number less than 1");
   } else {
     countElement.html(current_count - 1);
   }

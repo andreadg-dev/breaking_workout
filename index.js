@@ -6,21 +6,33 @@ const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {
   return catCompare !== 0 ? catCompare : a.name.localeCompare(b.name);
 });
 
-const STORAGE_KEY = "breakinghiit_1rm_v1";
+// Create an Array with 5 storage key names
+const STORAGE_KEYS = Array.from(
+  { length: 5 },
+  (_, index) => `breakinghiit_1rm_v${index}`,
+);
 
-function saveCurrentState() {
-  let workout = {
-    secondsActive: 0,
-    secondsRest: 0,
-    totalExercisesCount: 0,
-    totalDurationInSecs: 0,
-    exercises: [],
+function saveCurrentState(storageKey, stateName) {
+  let currentSavedState = localStorage.getItem(storageKey);
+
+  let stateToSave = {
+    stateName: stateName,
+    storageKey: storageKey,
+    workout: {
+      secondsActive: 0,
+      secondsRest: 0,
+      totalExercisesCount: 0,
+      totalDurationInSecs: 0,
+      exercises: [],
+    },
   };
 
-  workout.secondsActive = Number($("#seconds_active").html());
-  workout.secondsRest = Number($("#seconds_rest").html());
-  workout.totalExercisesCount = Number($("#total_count").html());
-  workout.totalDurationInSecs = Number($("#total_duration_hidden").html());
+  stateToSave.workout.secondsActive = Number($("#seconds_active").html());
+  stateToSave.workout.secondsRest = Number($("#seconds_rest").html());
+  stateToSave.workout.totalExercisesCount = Number($("#total_count").html());
+  stateToSave.workout.totalDurationInSecs = Number(
+    $("#total_duration_hidden").html(),
+  );
 
   let filteredMoves = $(".move_label")
     .find(".move_dropdown")
@@ -48,7 +60,7 @@ function saveCurrentState() {
       .find(".move_count")
       .html();
 
-    workout.exercises.push({
+    stateToSave.workout.exercises.push({
       id: index,
       exerciseId: exerciseValue,
       exerciseName: exercise[0].name,
@@ -56,20 +68,36 @@ function saveCurrentState() {
     });
   });
 
-  return workout;
+  return stateToSave;
 }
 
 function newOverlayScreen(header, content) {
-  let newOverlayComponent = OVERLAY_COMPONENT.replace(
-    "{{header}}",
-    header,
-  ).replace("{{content}}", content);
-
+  let newOverlayComponent = OVERLAY_COMPONENT(header, content);
   $("#root").append(newOverlayComponent);
 }
 
 function closeOverlayScreen(element) {
   $(element).closest("#overlay_screen").remove();
+}
+
+function newSessionStatePopup() {
+  let currentSessionSates = STORAGE_KEYS.map((storageKey, index) => {
+    let currentState = localStorage.getItem(storageKey);
+    if (currentState && currentState.trim() != "") {
+      let parsedStorageValue = JSON.parse(window.atob(currentState));
+
+      return SAVELOAD_SESSION_POPUP(
+        "used",
+        index,
+        parsedStorageValue.stateName,
+        parsedStorageValue.storageKey,
+      );
+    } else {
+      return SAVELOAD_SESSION_POPUP("empty", index, "Undefined", storageKey);
+    }
+  });
+
+  newOverlayScreen("SAVE/LOAD", `<div>${currentSessionSates.join("")}</div>`);
 }
 
 //================================
@@ -129,7 +157,7 @@ function generateMovesDropdown() {
 
 // Generate move component
 function getMovesComponent() {
-  return MOVE_LABEL.replace("{{movesdropdown}}", generateMovesDropdown());
+  return MOVE_LABEL(generateMovesDropdown());
 }
 
 // Add move label when clicking on the add button
@@ -344,7 +372,7 @@ function enableDraggableBehaviour() {
 // Main function to generate move selection screen based on localStorage
 function MovesSelectionScreen() {
   // Retrieves the current moves stored locally in the browser if any
-  const currentState = localStorage.getItem(STORAGE_KEY);
+  const currentState = localStorage.getItem(STORAGE_KEYS[0]); //CHANGE THIS ASAP!!
 
   // Appends to root the main sections of the screen
   $("#root").append(`<div id="workout_settings"></div>
@@ -415,7 +443,6 @@ async function manageWakeLock(action) {
 // Function to play the breakbeat or to pause it in a fade out
 // The breakbeat object has to be declare outside the function not to play several tracks at the same time
 const breakbeatAudio = new Audio("./audio/funky_deegeeace.mp3");
-
 function breakbeat(action) {
   if (action === "play") {
     breakbeatAudio.volume = 1;

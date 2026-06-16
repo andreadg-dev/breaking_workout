@@ -6,16 +6,38 @@ const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
 </svg>`;
 
-const OVERLAY_COMPONENT = `<div id="overlay_screen">
+const OVERLAY_COMPONENT = (header, content) => {
+  return `<div id="overlay_screen">
     <div id="overlay_screen_card" class="flex-column">
         <div id="overlay_screen_header">
             <button onClick="closeOverlayScreen(this)" id="overlay_screen_closebtn" type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">${CLOSE_ICON}</span>
             </button>
-            <span>{{header}}</span></div>
-        <div id="overlay_screen_content">{{content}}</div>
+            <span>${header}</span></div>
+        <div id="overlay_screen_content">${content}</div>
     </div>
 </div>`;
+};
+
+const SAVELOAD_SESSION_POPUP = (status, index, stateName, storageKey) => {
+  if (!["used", "empty"].includes(status)) {
+    return;
+  }
+
+  let saveState =
+    status === "used" ? "OVERWRITE" : status === "empty" && "SAVE";
+
+  return `<div class="popup_storage_line flex">
+        <div class="popup_storage_line_left flex-column">
+          <div class="popup_storage_line_left_namestatus">
+            <span class="popup_storage_line_left_index">${index}.</span> <span>${stateName}</span>
+            <span class="storage_status storage_status_${status}">${status}</span>
+          </div>
+          <span class="storage_key">storage key: ${storageKey}</span>
+        </div>
+        <div class="popup_btn popup_${saveState.toLowerCase()}_btn pointer">${saveState}</div>
+      </div>`;
+};
 
 //================================
 // IMPORT WORKOUT SCREEN
@@ -79,13 +101,14 @@ const PLUS_CIRCLE_FILL = `<svg xmlns="http://www.w3.org/2000/svg" width="22" hei
 
 const SEPARATOR = `<div class="separator"></div>`;
 
-const MOVE_LABEL = `<div class="move_label noselection">
+const MOVE_LABEL = (movesdropdown) => {
+  return `<div class="move_label noselection">
     <div class="flex">
         <div class="drag-handle" title="Drag to reorder">⠿</div>
         <div class="remove_move_label pointer" onClick="removeMoveLabel(this); updateWorkoutSettings(calculateTotalExerciseCount())">${BIN_ICON}</div>
     </div>
     <div class="move_left">
-        <div class="moves-dropdown">{{movesdropdown}}</div>
+        <div class="moves-dropdown">${movesdropdown}</div>
     </div>
     <div class="move_right">
         <span class="increase_move_count_btn pointer" onClick="increaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${PLUS_CIRCLE_FILL}</span>
@@ -93,6 +116,7 @@ const MOVE_LABEL = `<div class="move_label noselection">
         <span class="decrease_move_count_btn pointer" onClick="decreaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${MINUS_CIRCLE_FILL}</span>
     </div>
 </div>`;
+};
 
 const ADD_BUTTON = `<div class="add_btn my_btn pointer" onClick="addMoveLabel(this)">+</div>`;
 const PLAY_BUTTON = `<div class="add_btn my_btn pointer" onClick="PlayScreen()">PLAY</div>`;

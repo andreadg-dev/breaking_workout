@@ -13,74 +13,96 @@ const STORAGE_KEYS = Array.from(
 );
 
 function saveCurrentState(storageKey, stateName) {
-  let currentSavedState = localStorage.getItem(storageKey);
+  try {
+    let stateToSave = {
+      stateName: stateName,
+      storageKey: storageKey,
+      workout: {
+        secondsActive: 0,
+        secondsRest: 0,
+        totalExercisesCount: 0,
+        totalDurationInSecs: 0,
+        exercises: [],
+      },
+    };
 
-  let stateToSave = {
-    stateName: stateName,
-    storageKey: storageKey,
-    workout: {
-      secondsActive: 0,
-      secondsRest: 0,
-      totalExercisesCount: 0,
-      totalDurationInSecs: 0,
-      exercises: [],
-    },
-  };
+    stateToSave.workout.secondsActive = Number($("#seconds_active").html());
+    stateToSave.workout.secondsRest = Number($("#seconds_rest").html());
+    stateToSave.workout.totalExercisesCount = Number($("#total_count").html());
+    stateToSave.workout.totalDurationInSecs = Number(
+      $("#total_duration_hidden").html(),
+    );
 
-  stateToSave.workout.secondsActive = Number($("#seconds_active").html());
-  stateToSave.workout.secondsRest = Number($("#seconds_rest").html());
-  stateToSave.workout.totalExercisesCount = Number($("#total_count").html());
-  stateToSave.workout.totalDurationInSecs = Number(
-    $("#total_duration_hidden").html(),
-  );
-
-  let filteredMoves = $(".move_label")
-    .find(".move_dropdown")
-    .filter(function () {
-      return $(this).val() !== null && $(this).val().trim() !== "";
-    });
-
-  if (filteredMoves.length < 1) {
-    return;
-  }
-
-  filteredMoves.each((index, item) => {
-    let exerciseValue = $(item)
-      .closest(".move_label")
+    let filteredMoves = $(".move_label")
       .find(".move_dropdown")
-      .val()
-      .split("-")[0];
+      .filter(function () {
+        return $(this).val() !== null && $(this).val().trim() !== "";
+      });
 
-    let exercise = MOVEMENTS.filter((item) => {
-      return item.id === exerciseValue;
+    if (filteredMoves.length < 1) {
+      return;
+    }
+
+    filteredMoves.each((index, item) => {
+      let exerciseValue = $(item)
+        .closest(".move_label")
+        .find(".move_dropdown")
+        .val()
+        .split("-")[0];
+
+      let exercise = MOVEMENTS.filter((item) => {
+        return item.id === exerciseValue;
+      });
+
+      let exerciseCount = $(item)
+        .closest(".move_label")
+        .find(".move_count")
+        .html();
+
+      stateToSave.workout.exercises.push({
+        id: index,
+        exerciseId: exerciseValue,
+        exerciseName: exercise[0].name,
+        count: Number(exerciseCount),
+      });
     });
 
-    let exerciseCount = $(item)
-      .closest(".move_label")
-      .find(".move_count")
-      .html();
-
-    stateToSave.workout.exercises.push({
-      id: index,
-      exerciseId: exerciseValue,
-      exerciseName: exercise[0].name,
-      count: Number(exerciseCount),
-    });
-  });
-
-  return stateToSave;
+    localStorage.setItem(window.btoa(JSON.stringify(stateToSave)));
+  } catch (error) {
+    newErrorPopup(error);
+  }
 }
 
-function newOverlayScreen(header, content) {
-  let newOverlayComponent = OVERLAY_COMPONENT(header, content);
+function newOverlayScreen(header, content, notificationType) {
+  let newOverlayComponent = OVERLAY_COMPONENT(
+    header,
+    content,
+    notificationType,
+  );
   $("#root").append(newOverlayComponent);
 }
 
+// Function to generate error pop-ups using the overlay screen
+function newErrorPopup(message) {
+  newOverlayScreen("ERROR", message, "error");
+}
+
+// Function to close the overlay screen by clicking on the X icon of the pop-up
 function closeOverlayScreen(element) {
   $(element).closest("#overlay_screen").remove();
 }
 
-function newSessionStatePopup() {
+function newSessionStatePopup(action) {
+  if (
+    action === "save" &&
+    Number($("#total_count").html()) < THRESHOLDS.minExercisesInWorkout
+  ) {
+    newErrorPopup(
+      `You cannot save a workout session with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
+    );
+    return;
+  }
+
   let currentSessionSates = STORAGE_KEYS.map((storageKey, index) => {
     let currentState = localStorage.getItem(storageKey);
     if (currentState && currentState.trim() != "") {
@@ -97,7 +119,34 @@ function newSessionStatePopup() {
     }
   });
 
-  newOverlayScreen("SAVE/LOAD", `<div>${currentSessionSates.join("")}</div>`);
+  if (!["save", "load"].includes(action.toLowerCase())) {
+    newErrorPopup("You can only choose Save or Load!");
+    return;
+  }
+
+  newOverlayScreen(
+    action.toUpperCase(),
+    `<div>${currentSessionSates.join("")}</div>`,
+  );
+}
+
+function newSessionStateNamePopup(storageKey) {
+  if (Number($("#total_count").html()) < THRESHOLDS.minExercisesInWorkout) {
+    newErrorPopup(
+      `You cannot save a workout session with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
+    );
+    return;
+  }
+
+  newOverlayScreen(
+    "SESSION NAME",
+    `<div class="flex-column session_name_card_content">
+      <label for="session_name">Choose a title for your session:</label>
+      <input type="text" maxlength="16" name="session_name" id="session_name_input" required>
+      <button class="btn btn-primary">CONFIRM</button>
+      <div>This workout session will be saved locally on <span class="storage_key">${storageKey}</span> in your browser.</div>
+    </div>`,
+  );
 }
 
 //================================
@@ -162,16 +211,34 @@ function getMovesComponent() {
 
 // Add move label when clicking on the add button
 function addMoveLabel(element) {
+  if (Number($("#total_count").html()) >= THRESHOLDS.maxExercisesInWorkout) {
+    newErrorPopup(
+      `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises for one workout session.`,
+    );
+    return;
+  }
+
   $("#moves_selection").append(getMovesComponent());
 }
 
 // Remove move label when clicking on the bin button
 function removeMoveLabel(element) {
   $(element).closest(".move_label").remove();
+
+  // Update total exercise count and total duration
+  updateWorkoutSettings(calculateTotalExerciseCount());
+  updateWorkoutSettings(null, calculateTotalWorkoutDuration());
 }
 
 // Functions to increase or decrease the corresponding move count
 function increaseMoveCount(element) {
+  if (Number($("#total_count").html()) >= THRESHOLDS.maxExercisesInWorkout) {
+    newErrorPopup(
+      `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises for one workout session.`,
+    );
+    return;
+  }
+
   let countElement = $(element).parent().find(".move_count");
   let current_count = Number(countElement.html()) || 1;
   countElement.html(current_count + 1);
@@ -181,9 +248,11 @@ function decreaseMoveCount(element) {
   let countElement = $(element).parent().find(".move_count");
   let current_count = Number(countElement.html()) || 1;
 
-  if (current_count <= 1) {
+  if (current_count <= THRESHOLDS.minExerciseCount) {
     //window.alert("You cannot choose a number less than 1");
-    newOverlayScreen("Error", "You cannot choose a number less than 1");
+    newErrorPopup(
+      `You cannot choose a number less than ${THRESHOLDS.minExerciseCount}`,
+    );
   } else {
     countElement.html(current_count - 1);
   }
@@ -277,6 +346,10 @@ function calculateTotalWorkoutDuration() {
 // Generic function to increase or decrease active or rest time
 function updateActiveRestTime(element, plusorminus) {
   let activeorrest = "";
+  let step = 5;
+  let minsecs = THRESHOLDS.minSecsActiveRest;
+  let maxsecs = THRESHOLDS.maxSecsActiveRest;
+  let secondsError = `You can only select an amount of seconds between ${minsecs}" and ${maxsecs}"`;
 
   if ($(element).closest("#seconds_exercises").length > 0) {
     activeorrest = "active";
@@ -296,10 +369,6 @@ function updateActiveRestTime(element, plusorminus) {
   let secondsActive = $("#seconds_active");
   let secondsRest = $("#seconds_rest");
 
-  let step = 5;
-  let minsecs = 10;
-  let maxsecs = 120;
-
   // In case the plus and minus buttons in the active section are pressed
   if (activeorrest === "active") {
     if (plusorminus === "plus") {
@@ -307,9 +376,8 @@ function updateActiveRestTime(element, plusorminus) {
         Number(secondsActive.html()) + step < minsecs ||
         Number(secondsActive.html()) + step > maxsecs
       ) {
-        window.alert(
-          `You can only select an amount of seconds between ${minsecs}" and ${maxsecs}"`,
-        );
+        newErrorPopup(secondsError);
+
         return;
       } else {
         secondsActive.html(Number(secondsActive.html()) + 5);
@@ -320,9 +388,8 @@ function updateActiveRestTime(element, plusorminus) {
         Number(secondsActive.html()) - step < minsecs ||
         Number(secondsActive.html()) - step > maxsecs
       ) {
-        window.alert(
-          `You can only select an amount of seconds between ${minsecs}" and ${maxsecs}"`,
-        );
+        newErrorPopup(secondsError);
+
         return;
       } else {
         secondsActive.html(Number(secondsActive.html()) - 5);
@@ -336,9 +403,8 @@ function updateActiveRestTime(element, plusorminus) {
         Number(secondsRest.html()) + step < minsecs ||
         Number(secondsRest.html()) + step > maxsecs
       ) {
-        window.alert(
-          `You can only select an amount of seconds between ${minsecs}" and ${maxsecs}"`,
-        );
+        newErrorPopup(secondsError);
+
         return;
       } else {
         secondsRest.html(Number(secondsRest.html()) + 5);
@@ -349,9 +415,8 @@ function updateActiveRestTime(element, plusorminus) {
         Number(secondsRest.html()) - step < minsecs ||
         Number(secondsRest.html()) - step > maxsecs
       ) {
-        window.alert(
-          `You can only select an amount of seconds between ${minsecs}" and ${maxsecs}"`,
-        );
+        newErrorPopup(secondsError);
+
         return;
       } else {
         secondsRest.html(Number(secondsRest.html()) - 5);
@@ -403,7 +468,13 @@ function MovesSelectionScreen() {
 //================================
 
 function PlayScreen() {
-  let workoutSession = saveCurrentState();
+  if (Number($("#total_count").html()) < THRESHOLDS.minExercisesInWorkout) {
+    newErrorPopup(
+      `You cannot start a workout session with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
+    );
+    return;
+  }
+
   $("#root").empty();
   $("#root").append(WORKOUT_PLAYCARD);
   startWorkoutSession(workoutSession);

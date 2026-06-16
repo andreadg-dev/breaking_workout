@@ -132,3 +132,11 @@ const SESSION_SAMPLE = {
     },
   ],
 };
+
+const THRESHOLDS = {
+  minExercisesInWorkout: 1,
+  maxExercisesInWorkout: 30,
+  minSecsActiveRest: 10,
+  maxSecsActiveRest: 120,
+  minExerciseCount: 1,
+};

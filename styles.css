@@ -84,6 +84,18 @@ body {
   border-radius: 50px;
 }
 
+.error_icn {
+  position: absolute;
+  left: 1rem;
+}
+
+.red_glow {
+  box-shadow:
+    0 0 10px rgba(236, 0, 0, 0.6),
+    0 0 20px rgba(236, 0, 0, 0.5),
+    0 0 40px rgba(236, 0, 0, 0.4);
+}
+
 /*================================*/
 /*================================*/
 /* OVERLAY SCREEN */
@@ -186,6 +198,7 @@ body {
 .storage_key {
   font-size: 0.8rem;
   color: #a1a1a1;
+  font-family: "Fira Code";
 }
 
 .popup_btn {
@@ -194,13 +207,15 @@ body {
   border-radius: var(--radius);
 }
 
-.popup_save_btn {
+.popup_save_btn,
+.save_btn {
   border: 1px solid #8bdbff;
   background-color: #0074ff;
   color: #8bdbff;
 }
 
-.popup_save_btn:hover {
+.popup_save_btn:hover,
+.save_btn:hover {
   border-color: rgba(0, 149, 255, 0.644);
   box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
 }
@@ -218,6 +233,18 @@ body {
 
 .popup_storage_line_left_index {
   color: gray;
+}
+
+.session_name_card_content {
+  padding: 0 20px;
+  text-align: left;
+}
+
+#session_name_input {
+  cursor: text;
+  background-color: rgb(33, 37, 41);
+  color: white;
+  border-radius: 10px;
 }
 
 /*================================*/
@@ -458,6 +485,17 @@ div.noselection:hover {
 
 .add_btn {
   background: rgba(18, 25, 38, 0.6);
+}
+
+.play_btn {
+  background-color: #856120;
+  color: #f5d69b;
+  border: 1px solid #f5d69b;
+}
+
+.play_btn:hover {
+  border-color: rgba(255, 166, 0, 0.644);
+  box-shadow: 0 0 0 3px rgba(212, 159, 45, 0.12);
 }
 
 /*===========================*/

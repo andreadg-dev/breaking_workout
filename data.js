@@ -107,31 +107,27 @@ const MOVEMENTS = [
 ];
 
 const SESSION_SAMPLE = {
-  secondsActive: 15,
-  secondsRest: 10,
-  totalExercisesCount: 6,
-  totalDurationInSecs: 150,
-  exercises: [
-    {
-      id: 0,
-      exerciseId: "6d2e8f3a",
-      exerciseName: "Baby Love",
-      count: 2,
-    },
-    {
-      id: 1,
-      exerciseId: "9f3e1b7c",
-      exerciseName: "Baby Freeze",
-      count: 3,
-    },
-    {
-      id: 2,
-      exerciseId: "8f3b2a1c",
-      exerciseName: "Indian Step",
-      count: 1,
-    },
-  ],
+  stateName: "test session name",
+  storageKey: "breakinghiit_1rm_v2",
+  workout: {
+    secondsActive: 10,
+    secondsRest: 10,
+    totalExercisesCount: 1,
+    totalDurationInSecs: 20,
+    exercises: [
+      { id: 0, exerciseId: "2e6d9f1a", exerciseName: "3-Step", count: 1 },
+    ],
+  },
 };
+
+const SESSION_REQUIRED_KEYS = ["stateName", "storageKey", "workout"];
+const WORKOUT_REQUIRED_KEYS = [
+  "secondsActive",
+  "secondsRest",
+  "totalExercisesCount",
+  "totalDurationInSecs",
+  "exercises",
+];
 
 const THRESHOLDS = {
   minExercisesInWorkout: 1,

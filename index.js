@@ -90,6 +90,35 @@ function saveCurrentState(storageKey, stateName) {
   }
 }
 
+function loadCurrentState(storageKey) {
+  try {
+    let currentWorkoutSession = localStorage.getItem(storageKey);
+
+    if (!currentWorkoutSession && currentWorkoutSession.trim().length < 1) {
+      newErrorPopup(`The selected ${storageKey} does not contain any data!`);
+    } else {
+      let parsedSession = JSON.parse(window.atob(currentWorkoutSession));
+      console.log(parsedSession);
+
+      // Checking if the parsed object has all the required keys
+      if (
+        !SESSION_REQUIRED_KEYS.every((key) => key in parsedSession) &&
+        !WORKOUT_REQUIRED_KEYS.every((key) => key in parsedSession.workout)
+      ) {
+        newErrorPopup(
+          `The session saved on ${storageKey} is malformed and cannot be used!`,
+        );
+      } else {
+        console.log("all good!");
+      }
+    }
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while trying to load session saved on ${storageKey}:<br/><br/>${error}`,
+    );
+  }
+}
+
 function saveStateFromNamePopup() {
   let storageKey = $("#sessionnamepopup_storagekey").html().trim();
   let stateName = $("#session_name_input").val().trim();
@@ -127,31 +156,66 @@ function newSessionStatePopup(action) {
     return;
   }
 
-  let currentSessionSates = STORAGE_KEYS.map((storageKey, index) => {
-    let currentState = localStorage.getItem(storageKey);
-    if (currentState && currentState.trim() != "") {
-      let parsedStorageValue = JSON.parse(window.atob(currentState));
-
-      return SAVELOAD_SESSION_POPUP(
-        "used",
-        index,
-        parsedStorageValue.stateName,
-        parsedStorageValue.storageKey,
-      );
-    } else {
-      return SAVELOAD_SESSION_POPUP("empty", index, "Undefined", storageKey);
-    }
-  });
-
   if (!["save", "load"].includes(action.toLowerCase())) {
     newErrorPopup("You can only choose Save or Load!");
     return;
   }
 
-  newOverlayScreen(
-    action.toUpperCase(),
-    `<div>${currentSessionSates.join("")}</div>`,
-  );
+  if (action === "save") {
+    let currentSessionSates = STORAGE_KEYS.map((storageKey, index) => {
+      let currentState = localStorage.getItem(storageKey);
+      if (currentState && currentState.trim() != "") {
+        let parsedStorageValue = JSON.parse(window.atob(currentState));
+
+        return SAVELOAD_SESSION_POPUP(
+          "used",
+          index,
+          parsedStorageValue.stateName,
+          parsedStorageValue.storageKey,
+          action.toLowerCase(),
+        );
+      } else {
+        return SAVELOAD_SESSION_POPUP(
+          "empty",
+          index,
+          "Undefined",
+          storageKey,
+          action.toLowerCase(),
+        );
+      }
+    });
+
+    newOverlayScreen(
+      action.toUpperCase(),
+      `<div>${currentSessionSates.join("")}</div>`,
+    );
+  }
+
+  if (action === "load") {
+    let currentSessionSates = STORAGE_KEYS.map((storageKey, index) => {
+      let currentState = localStorage.getItem(storageKey);
+      if (currentState && currentState.trim() != "") {
+        let parsedStorageValue = JSON.parse(window.atob(currentState));
+
+        return SAVELOAD_SESSION_POPUP(
+          "used",
+          index,
+          parsedStorageValue.stateName,
+          parsedStorageValue.storageKey,
+          action.toLowerCase(),
+        );
+      }
+    });
+
+    if (currentSessionSates.length < 1) {
+      newOverlayScreen(action.toUpperCase(), "NO DATA TO BE LOADED!");
+    } else {
+      newOverlayScreen(
+        action.toUpperCase(),
+        `<div>${currentSessionSates.join("")}</div>`,
+      );
+    }
+  }
 }
 
 function newSessionStateNamePopup(storageKey, action) {

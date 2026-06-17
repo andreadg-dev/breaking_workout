@@ -7,6 +7,10 @@ const CLOSE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
 </svg>`;
 
+const FLOPPY_DISK = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy2" viewBox="0 0 16 16">
+  <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v3.5A1.5 1.5 0 0 1 11.5 6h-7A1.5 1.5 0 0 1 3 4.5V1H1.5a.5.5 0 0 0-.5.5m9.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"/>
+</svg>`;
+
 const COUNTING_ICON = `<svg xmlns="http://w3.org" viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <line x1="6" y1="5" x2="6" y2="19" />
   <line x1="10" y1="5" x2="10" y2="19" />
@@ -26,6 +30,11 @@ const CLOCK_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
 </svg>`;
 
 const PLAY_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/>
+</svg>`;
+
+const PLAY_ICON_SM = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
   <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/>
 </svg>`;
@@ -54,6 +63,18 @@ const ERROR_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
 
 </svg>`;
 
+const UPLOAD_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+  <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+</svg>`;
+
+const BULLSEYE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bullseye" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10m0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12"/>
+  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/>
+  <path d="M9.5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+</svg>`;
+
 // OTHER GLOBAL COMPONENTS
 const SEPARATOR = `<div class="separator"></div>`;
 
@@ -79,13 +100,32 @@ const OVERLAY_COMPONENT = (header, content, notificationType) => {
 </div>`;
 };
 
-const SAVELOAD_SESSION_POPUP = (status, index, stateName, storageKey) => {
+const SAVELOAD_SESSION_POPUP = (
+  status,
+  index,
+  stateName,
+  storageKey,
+  action,
+) => {
   if (!["used", "empty"].includes(status)) {
     return;
   }
 
   let saveState =
     status === "used" ? "OVERWRITE" : status === "empty" && "SAVE";
+
+  let saveLoadBtn =
+    action === "save"
+      ? `<div 
+        class="popup_btn popup_${saveState.toLowerCase()}_btn pointer"
+        onClick="newSessionStateNamePopup('${storageKey}','${saveState}')"
+        >${saveState}
+    </div>`
+      : `<div 
+        class="popup_btn popup_load_btn pointer"
+        onClick="loadCurrentState('${storageKey}')"
+        >LOAD
+    </div>`;
 
   return `<div class="popup_storage_line flex">
         <div class="popup_storage_line_left flex-column">
@@ -95,10 +135,7 @@ const SAVELOAD_SESSION_POPUP = (status, index, stateName, storageKey) => {
           </div>
           <span class="storage_key">storage key: ${storageKey}</span>
         </div>
-        <div 
-            class="popup_btn popup_${saveState.toLowerCase()}_btn pointer"
-            onClick="newSessionStateNamePopup('${storageKey}','${saveState}')"
-            >${saveState}</div>
+        ${saveLoadBtn}
       </div>`;
 };
 
@@ -132,10 +169,11 @@ const IMPORT_SCREEN_COMPONENT = `<div id="import_screen_wrapper" class="flex-col
             rows="6" 
             cols="50">
         </textarea>
+        <div class="my_btn pointer" id="import_workout_btn" onClick="">${UPLOAD_ICON} IMPORT WORKOUT</div>
     </div>
     <div class="import_screen_bottom flex-column">
-        <div class="my_btn pointer" id="import_workout_btn" onClick="">IMPORT WORKOUT</div>
-        <div class="my_btn pointer" id="loadcreate_workout_btn" onClick="goToMovesSelectionScreen()">LOAD/CREATE WORKOUT</div>
+        <div class="my_btn pointer" id="create_workout_btn" onClick="goToMovesSelectionScreen()"><span>${PLUS_CIRCLE_FILL}</span><span>CREATE WORKOUT</span></div>
+        <div class="my_btn pointer" id="load_workout_btn" onClick="newSessionStatePopup('load')">${BULLSEYE_ICON} LOAD WORKOUT</div>
     </div>
 </div>`;
 
@@ -160,9 +198,9 @@ const MOVE_LABEL = (movesdropdown) => {
 </div>`;
 };
 
-const ADD_BUTTON = `<div class="add_btn my_btn pointer" onClick="addMoveLabel(this)">+</div>`;
-const PLAY_BUTTON = `<div class="play_btn my_btn pointer" onClick="PlayScreen()">PLAY</div>`;
-const SAVE_BUTTON = `<div class="save_btn my_btn pointer" onClick="newSessionStatePopup('save')">SAVE</div>`;
+const ADD_BUTTON = `<div class="add_btn my_btn pointer" onClick="addMoveLabel(this)">${PLUS_CIRCLE_FILL}</div>`;
+const PLAY_BUTTON = `<div class="play_btn my_btn pointer" onClick="PlayScreen()">${PLAY_ICON} PLAY</div>`;
+const SAVE_BUTTON = `<div class="save_btn my_btn pointer" onClick="newSessionStatePopup('save')">${FLOPPY_DISK} SAVE</div>`;
 
 const FORM_BUTTONS = `<div class="flex-column">${ADD_BUTTON}${PLAY_BUTTON}${SAVE_BUTTON}</div>`;
 

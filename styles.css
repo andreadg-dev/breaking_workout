@@ -82,6 +82,9 @@ body {
   width: 16rem;
   justify-content: center;
   border-radius: 50px;
+  align-items: center;
+  line-height: 1;
+  height: 2.2rem;
 }
 
 .error_icn {
@@ -125,6 +128,7 @@ body {
   width: 35rem;
   margin: 0 1rem;
   font-family: "Fira Code";
+  word-break: break-word;
 }
 
 #overlay_screen_header {
@@ -233,6 +237,16 @@ body {
   box-shadow: 0 0 0 3px rgba(212, 45, 45, 0.12);
 }
 
+.popup_load_btn {
+  background-color: #efcb87;
+  color: #87714a;
+}
+
+.popup_load_btn:hover {
+  border-color: rgba(255, 196, 0, 0.644);
+  box-shadow: 0 0 0 3px rgba(212, 159, 45, 0.12);
+}
+
 .popup_storage_line_left_index {
   color: gray;
 }
@@ -282,27 +296,27 @@ body {
 #workout_string {
   width: 100%;
   cursor: text;
-  padding: 1px 0px;
   background-color: rgb(33, 37, 41);
   color: white;
   border-radius: 10px;
   padding: 10px;
+  margin-bottom: 1rem;
 }
 
 .import_screen_top {
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
   border-bottom: var(--separator);
+  align-items: center;
 }
 
 .import_screen_bottom {
-  padding-top: 2rem;
+  padding-top: 1rem;
   margin: auto;
 }
 
 #import_workout_btn {
-  background-color: rgb(3, 155, 100);
-  color: white;
-  border: 0;
+  background-color: rgb(131 215 184);
+  color: #306e38;
 }
 
 #import_workout_btn:hover {
@@ -310,15 +324,24 @@ body {
   box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
 }
 
-#loadcreate_workout_btn {
-  background-color: rgb(0, 149, 255);
-  color: white;
-  border: 0;
+#create_workout_btn {
+  background-color: rgb(123 173 208);
+  color: rgb(26 44 98);
 }
 
-#loadcreate_workout_btn:hover {
-  border-color: rgba(0, 149, 255, 0.644);
-  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.12);
+#create_workout_btn:hover {
+  border-color: rgba(0, 98, 255, 0.644);
+  box-shadow: 0 0 0 3px rgba(45, 81, 212, 0.12);
+}
+
+#load_workout_btn {
+  background-color: #efcb87;
+  color: #87714a;
+}
+
+#load_workout_btn:hover {
+  border-color: rgba(255, 196, 0, 0.644);
+  box-shadow: 0 0 0 3px rgba(212, 159, 45, 0.12);
 }
 
 /*================================*/

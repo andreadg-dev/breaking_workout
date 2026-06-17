@@ -139,4 +139,6 @@ const THRESHOLDS = {
   minSecsActiveRest: 10,
   maxSecsActiveRest: 120,
   minExerciseCount: 1,
+  minSessionNameChars: 5,
+  maxSessionNameChars: 20,
 };

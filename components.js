@@ -97,9 +97,26 @@ const SAVELOAD_SESSION_POPUP = (status, index, stateName, storageKey) => {
         </div>
         <div 
             class="popup_btn popup_${saveState.toLowerCase()}_btn pointer"
-            onClick="newSessionStateNamePopup('${storageKey}')"
+            onClick="newSessionStateNamePopup('${storageKey}','${saveState}')"
             >${saveState}</div>
       </div>`;
+};
+
+const SESSION_NAME_POPUP = (storageKey, action) => {
+  return `<div class="flex-column session_name_card_content">
+      ${action === "OVERWRITE" ? `<div id="overwrite_warning">This action will overwrite what you currently have saved in the selected storage key.</div>` : ""}
+      <label for="session_name">Choose a title for your session:</label>
+      <input 
+        type="text" 
+        maxlength="${THRESHOLDS.maxSessionNameChars}" 
+        minlength="${THRESHOLDS.maxSessionNameChars}" 
+        name="session_name" 
+        id="session_name_input" 
+        placeholder="Unintitled"
+        required>
+      <button class="btn btn-primary" onClick="saveStateFromNamePopup()">CONFIRM</button>
+      <div>This workout session will be saved locally on <span id="sessionnamepopup_storagekey" class="storage_key">${storageKey}</span> in your browser.</div>
+    </div>`;
 };
 
 //================================

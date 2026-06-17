@@ -13,6 +13,21 @@ const STORAGE_KEYS = Array.from(
 );
 
 function saveCurrentState(storageKey, stateName) {
+  if (
+    !STORAGE_KEYS.includes(storageKey) ||
+    !(
+      stateName.trim().length >= THRESHOLDS.minSessionNameChars &&
+      stateName.trim().length <= THRESHOLDS.maxSessionNameChars
+    )
+  ) {
+    newErrorPopup(`Either the storage key selected is incorrect or the session name you chose does not
+      comply with the session name requirements (it can only be between 5 and 20 characters long):<br/><br/>
+        • Session name selected: '${stateName}'<br/>
+        • Storage key selected: '${storageKey}'`);
+
+    return;
+  }
+
   try {
     let stateToSave = {
       stateName: stateName,
@@ -67,10 +82,19 @@ function saveCurrentState(storageKey, stateName) {
       });
     });
 
-    localStorage.setItem(window.btoa(JSON.stringify(stateToSave)));
+    localStorage.setItem(storageKey, window.btoa(JSON.stringify(stateToSave)));
   } catch (error) {
-    newErrorPopup(error);
+    newErrorPopup(
+      `An unexpected error occurred while trying to save session to storage key ${storageKey}:<br/><br/>${error}`,
+    );
   }
+}
+
+function saveStateFromNamePopup() {
+  let storageKey = $("#sessionnamepopup_storagekey").html().trim();
+  let stateName = $("#session_name_input").val().trim();
+
+  saveCurrentState(storageKey, stateName);
 }
 
 function newOverlayScreen(header, content, notificationType) {
@@ -130,7 +154,7 @@ function newSessionStatePopup(action) {
   );
 }
 
-function newSessionStateNamePopup(storageKey) {
+function newSessionStateNamePopup(storageKey, action) {
   if (Number($("#total_count").html()) < THRESHOLDS.minExercisesInWorkout) {
     newErrorPopup(
       `You cannot save a workout session with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
@@ -138,15 +162,7 @@ function newSessionStateNamePopup(storageKey) {
     return;
   }
 
-  newOverlayScreen(
-    "SESSION NAME",
-    `<div class="flex-column session_name_card_content">
-      <label for="session_name">Choose a title for your session:</label>
-      <input type="text" maxlength="16" name="session_name" id="session_name_input" required>
-      <button class="btn btn-primary">CONFIRM</button>
-      <div>This workout session will be saved locally on <span class="storage_key">${storageKey}</span> in your browser.</div>
-    </div>`,
-  );
+  newOverlayScreen("SESSION NAME", SESSION_NAME_POPUP(storageKey, action));
 }
 
 //================================
@@ -361,7 +377,9 @@ function updateActiveRestTime(element, plusorminus) {
 
   if (!activeorrest || activeorrest.trim() === "") {
     console.log(
-      `An error occurred. Neither active nor rest selected:\n  Active lenth: ${$(element).closest("#seconds_exercises").length}\n  Rest lenth: ${$(element).closest("#seconds_rest_duration").length}`,
+      `An error occurred. Neither active nor rest selected:<br/><br/>
+        • Active lenth: ${$(element).closest("#seconds_exercises").length}<br/>
+        • Rest lenth: ${$(element).closest("#seconds_rest_duration").length}`,
     );
     return;
   }

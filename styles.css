@@ -124,6 +124,7 @@ body {
   gap: 0;
   width: 35rem;
   margin: 0 1rem;
+  font-family: "Fira Code";
 }
 
 #overlay_screen_header {
@@ -139,10 +140,11 @@ body {
 #overlay_screen_content {
   font-size: 1rem;
   color: white;
-  padding: 40px 10px;
+  padding: 40px 20px;
   background-color: #272626;
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
+  text-align: justify;
 }
 
 #overlay_screen_closebtn {
@@ -244,7 +246,16 @@ body {
   cursor: text;
   background-color: rgb(33, 37, 41);
   color: white;
-  border-radius: 10px;
+  border-radius: 4px;
+}
+
+#overwrite_warning {
+  border: 1px solid;
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  text-align: center;
+  color: red;
+  background-color: #82262666;
 }
 
 /*================================*/

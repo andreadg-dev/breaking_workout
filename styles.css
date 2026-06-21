@@ -44,7 +44,7 @@ body {
 
 #root {
   margin: 0 auto;
-  padding: 14px 16px 0;
+  padding: 5rem 1rem 3rem;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -87,7 +87,8 @@ body {
   height: 2.2rem;
 }
 
-.error_icn {
+.error_icn,
+.success_icn {
   position: absolute;
   left: 1rem;
 }
@@ -97,6 +98,13 @@ body {
     0 0 10px rgba(236, 0, 0, 0.6),
     0 0 20px rgba(236, 0, 0, 0.5),
     0 0 40px rgba(236, 0, 0, 0.4);
+}
+
+.green_glow {
+  box-shadow:
+    0 0 10px rgba(0, 236, 28, 0.6),
+    0 0 20px rgba(0, 236, 16, 0.5),
+    0 0 40px rgba(0, 236, 55, 0.4);
 }
 
 /*================================*/
@@ -129,6 +137,8 @@ body {
   margin: 0 1rem;
   font-family: "Fira Code";
   word-break: break-word;
+  max-height: 75dvh;
+  overflow: hidden;
 }
 
 #overlay_screen_header {
@@ -142,13 +152,15 @@ body {
 }
 
 #overlay_screen_content {
-  font-size: 1rem;
+  font-size: 0.8rem;
   color: white;
   padding: 40px 20px;
   background-color: #272626;
   border-bottom-left-radius: var(--radius);
   border-bottom-right-radius: var(--radius);
   text-align: justify;
+  overflow-y: auto;
+  flex: 1;
 }
 
 #overlay_screen_closebtn {
@@ -162,6 +174,12 @@ body {
   color: rgb(248, 166, 13);
 }
 
+#my_navbar {
+  border-bottom: 1px solid #00000036;
+  background-color: #00000014 !important;
+  height: 4.5rem;
+}
+
 /*================================*/
 /*================================*/
 /* SAVE/LOAD POP-UP */
@@ -172,6 +190,7 @@ body {
   padding: 10px 20px;
   font-family: "Fira Code";
   border-bottom: 1px solid #ffffff38;
+  flex-wrap: wrap;
 }
 
 .popup_storage_line:last-child {
@@ -458,6 +477,7 @@ body {
   border-radius: 50px;
   background: rgba(18, 25, 38, 0.6);
   flex: 1 1 calc(50% - 0.75rem);
+  height: 2.4rem;
 }
 
 .move_label:hover {

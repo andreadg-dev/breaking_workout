@@ -44,8 +44,9 @@ const BIN_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
   <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
 </svg>`;
 
-const MINUS_CIRCLE_FILL = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
-  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
+const MINUS_CIRCLE_FILL = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
 </svg>`;
 
 const PLUS_CIRCLE_FILL = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -60,6 +61,24 @@ const ERROR_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="2
   <!-- White cross -->
   <line x1="25" y1="25" x2="65" y2="65" stroke="white" stroke-width="8" stroke-linecap="round"/>
   <line x1="65" y1="25" x2="25" y2="65" stroke="white" stroke-width="8" stroke-linecap="round"/>
+
+</svg>`;
+
+const SUCCESS_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 90 90">
+  
+  <!-- Green circle -->
+  <circle cx="45" cy="45" r="45" fill="#28a745"/>
+  
+  <!-- White checkmark -->
+  <polyline 
+    points="25,48 40,62 65,30" 
+    fill="none" 
+    stroke="white" 
+    stroke-width="8" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
 
 </svg>`;
 
@@ -79,18 +98,23 @@ const BULLSEYE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height
 const SEPARATOR = `<div class="separator"></div>`;
 
 const OVERLAY_COMPONENT = (header, content, notificationType) => {
-  let errorItems =
+  let notificationItems =
     notificationType && notificationType === "error"
       ? {
           icn: `<span class="error_icn">${ERROR_ICON}</span>`,
           glow: "red_glow",
         }
-      : null;
+      : notificationType && notificationType === "success"
+        ? {
+            icn: `<span class="success_icn">${SUCCESS_ICON}</span>`,
+            glow: "green_glow",
+          }
+        : null;
 
   return `<div id="overlay_screen">
-    <div id="overlay_screen_card" class="flex-column ${errorItems ? errorItems.glow : ""}">   
+    <div id="overlay_screen_card" class="flex-column ${notificationItems ? notificationItems.glow : ""}">   
         <div id="overlay_screen_header">
-            ${errorItems ? errorItems.icn : ""}
+            ${notificationItems ? notificationItems.icn : ""}
             <button onClick="closeOverlayScreen(this)" id="overlay_screen_closebtn" type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">${CLOSE_ICON}</span>
             </button>
@@ -123,7 +147,7 @@ const SAVELOAD_SESSION_POPUP = (
     </div>`
       : `<div 
         class="popup_btn popup_load_btn pointer"
-        onClick="loadCurrentState('${storageKey}')"
+        onClick="loadStateFromStorage('${storageKey}')"
         >LOAD
     </div>`;
 
@@ -169,10 +193,10 @@ const IMPORT_SCREEN_COMPONENT = `<div id="import_screen_wrapper" class="flex-col
             rows="6" 
             cols="50">
         </textarea>
-        <div class="my_btn pointer" id="import_workout_btn" onClick="">${UPLOAD_ICON} IMPORT WORKOUT</div>
+        <div class="my_btn pointer" id="import_workout_btn" onClick="MovesSelectionScreen(document.getElementById('workout_string').value.trim())">${UPLOAD_ICON} IMPORT WORKOUT</div>
     </div>
     <div class="import_screen_bottom flex-column">
-        <div class="my_btn pointer" id="create_workout_btn" onClick="goToMovesSelectionScreen()"><span>${PLUS_CIRCLE_FILL}</span><span>CREATE WORKOUT</span></div>
+        <div class="my_btn pointer" id="create_workout_btn" onClick="MovesSelectionScreen()"><span>${PLUS_CIRCLE_FILL}</span><span>CREATE WORKOUT</span></div>
         <div class="my_btn pointer" id="load_workout_btn" onClick="newSessionStatePopup('load')">${BULLSEYE_ICON} LOAD WORKOUT</div>
     </div>
 </div>`;
@@ -181,8 +205,8 @@ const IMPORT_SCREEN_COMPONENT = `<div id="import_screen_wrapper" class="flex-col
 // MOVE SELECTION SCREEN
 //================================
 
-const MOVE_LABEL = (movesdropdown) => {
-  return `<div class="move_label noselection">
+const MOVE_LABEL = (movesdropdown, exerciseCount, load) => {
+  return `<div class="move_label ${load ? "okselection" : "noselection"}">
     <div class="flex">
         <div class="drag-handle" title="Drag to reorder">⠿</div>
         <div class="remove_move_label pointer" onClick="removeMoveLabel(this); updateWorkoutSettings(calculateTotalExerciseCount())">${BIN_ICON}</div>
@@ -192,7 +216,7 @@ const MOVE_LABEL = (movesdropdown) => {
     </div>
     <div class="move_right">
         <span class="increase_move_count_btn pointer" onClick="increaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${PLUS_CIRCLE_FILL}</span>
-        <span class="move_count">1</span>
+        <span class="move_count">${exerciseCount || 1}</span>
         <span class="decrease_move_count_btn pointer" onClick="decreaseMoveCount(this); updateWorkoutSettings(calculateTotalExerciseCount()); updateWorkoutSettings(null,calculateTotalWorkoutDuration())">${MINUS_CIRCLE_FILL}</span>
     </div>
 </div>`;

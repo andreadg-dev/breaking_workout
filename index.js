@@ -12,26 +12,11 @@ const STORAGE_KEYS = Array.from(
   (_, index) => `breakinghiit_1rm_v${index}`,
 );
 
-function saveCurrentState(storageKey, stateName) {
-  if (
-    !STORAGE_KEYS.includes(storageKey) ||
-    !(
-      stateName.trim().length >= THRESHOLDS.minSessionNameChars &&
-      stateName.trim().length <= THRESHOLDS.maxSessionNameChars
-    )
-  ) {
-    newErrorPopup(`Either the storage key selected is incorrect or the session name you chose does not
-      comply with the session name requirements (it can only be between 5 and 20 characters long):<br/><br/>
-        • Session name selected: '${stateName}'<br/>
-        • Storage key selected: '${storageKey}'`);
-
-    return;
-  }
-
+function newSessionObject() {
   try {
-    let stateToSave = {
-      stateName: stateName,
-      storageKey: storageKey,
+    let sessionObject = {
+      stateName: "",
+      storageKey: "",
       workout: {
         secondsActive: 0,
         secondsRest: 0,
@@ -41,10 +26,12 @@ function saveCurrentState(storageKey, stateName) {
       },
     };
 
-    stateToSave.workout.secondsActive = Number($("#seconds_active").html());
-    stateToSave.workout.secondsRest = Number($("#seconds_rest").html());
-    stateToSave.workout.totalExercisesCount = Number($("#total_count").html());
-    stateToSave.workout.totalDurationInSecs = Number(
+    sessionObject.workout.secondsActive = Number($("#seconds_active").html());
+    sessionObject.workout.secondsRest = Number($("#seconds_rest").html());
+    sessionObject.workout.totalExercisesCount = Number(
+      $("#total_count").html(),
+    );
+    sessionObject.workout.totalDurationInSecs = Number(
       $("#total_duration_hidden").html(),
     );
 
@@ -74,7 +61,7 @@ function saveCurrentState(storageKey, stateName) {
         .find(".move_count")
         .html();
 
-      stateToSave.workout.exercises.push({
+      sessionObject.workout.exercises.push({
         id: index,
         exerciseId: exerciseValue,
         exerciseName: exercise[0].name,
@@ -82,7 +69,39 @@ function saveCurrentState(storageKey, stateName) {
       });
     });
 
-    localStorage.setItem(storageKey, window.btoa(JSON.stringify(stateToSave)));
+    return sessionObject;
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while creating a new training session object:<br/><br/>${error}`,
+    );
+  }
+}
+
+function saveCurrentState(storageKey, stateName) {
+  if (
+    !STORAGE_KEYS.includes(storageKey) ||
+    !(
+      stateName.trim().length >= THRESHOLDS.minSessionNameChars &&
+      stateName.trim().length <= THRESHOLDS.maxSessionNameChars
+    )
+  ) {
+    newErrorPopup(`Either the storage key selected is incorrect or the session name you chose does not
+      comply with the session name requirements (it can only be between 5 and 20 characters long):<br/><br/>
+        • Session name selected: '${stateName}'<br/>
+        • Storage key selected: '${storageKey}'`);
+
+    return;
+  }
+
+  try {
+    let sessionToSave = newSessionObject();
+    sessionToSave.stateName = stateName;
+    sessionToSave.storageKey = storageKey;
+
+    localStorage.setItem(
+      storageKey,
+      window.btoa(JSON.stringify(sessionToSave)),
+    );
   } catch (error) {
     newErrorPopup(
       `An unexpected error occurred while trying to save session to storage key ${storageKey}:<br/><br/>${error}`,
@@ -90,31 +109,37 @@ function saveCurrentState(storageKey, stateName) {
   }
 }
 
-function loadCurrentState(storageKey) {
+function loadStateFromStorage(storageKey) {
   try {
-    let currentWorkoutSession = localStorage.getItem(storageKey);
+    MovesSelectionScreen(localStorage.getItem(storageKey));
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while retrieving session saved on local storage ${storageKey}:<br/><br/>${error}`,
+    );
+  }
+}
 
-    if (!currentWorkoutSession && currentWorkoutSession.trim().length < 1) {
-      newErrorPopup(`The selected ${storageKey} does not contain any data!`);
+function parseProvidedSession(sessionBase64String) {
+  try {
+    if (!sessionBase64String && sessionBase64String.trim().length < 1) {
+      newErrorPopup(`The provided session string does not contain any data!`);
     } else {
-      let parsedSession = JSON.parse(window.atob(currentWorkoutSession));
-      console.log(parsedSession);
+      let parsedSession = JSON.parse(window.atob(sessionBase64String));
+      //console.log(parsedSession);
 
       // Checking if the parsed object has all the required keys
       if (
         !SESSION_REQUIRED_KEYS.every((key) => key in parsedSession) &&
         !WORKOUT_REQUIRED_KEYS.every((key) => key in parsedSession.workout)
       ) {
-        newErrorPopup(
-          `The session saved on ${storageKey} is malformed and cannot be used!`,
-        );
+        newErrorPopup(`The session provided is malformed and cannot be used!`);
       } else {
-        console.log("all good!");
+        return parsedSession;
       }
     }
   } catch (error) {
     newErrorPopup(
-      `An unexpected error occurred while trying to load session saved on ${storageKey}:<br/><br/>${error}`,
+      `An unexpected error occurred while trying to parse the session provided:<br/><br/>${error}`,
     );
   }
 }
@@ -123,21 +148,41 @@ function saveStateFromNamePopup() {
   let storageKey = $("#sessionnamepopup_storagekey").html().trim();
   let stateName = $("#session_name_input").val().trim();
 
-  saveCurrentState(storageKey, stateName);
+  try {
+    saveCurrentState(storageKey, stateName);
+    newSuccessPopup(
+      `Session saved successfully on '${storageKey}' with the following name:'${stateName}'.`,
+    );
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred when saving '${stateName}' session on ${storageKey}:<br/><br/>${error}.`,
+    );
+  }
 }
 
 function newOverlayScreen(header, content, notificationType) {
+  // Remove any previous overlay screen if any
+  $("#overlay_screen").remove();
+
+  // Generate a new overlay component html code
   let newOverlayComponent = OVERLAY_COMPONENT(
     header,
     content,
     notificationType,
   );
+
+  // Append new overlay component html to root
   $("#root").append(newOverlayComponent);
 }
 
 // Function to generate error pop-ups using the overlay screen
 function newErrorPopup(message) {
   newOverlayScreen("ERROR", message, "error");
+}
+
+// Function to generate success pop-ups using the overlay screen
+function newSuccessPopup(message) {
+  newOverlayScreen("SUCCESS", message, "success");
 }
 
 // Function to close the overlay screen by clicking on the X icon of the pop-up
@@ -233,19 +278,15 @@ function newSessionStateNamePopup(storageKey, action) {
 // IMPORT WORKOUT SCREEN
 //================================
 function ImportWorkoutScreen() {
-  $("#root").append(IMPORT_SCREEN_COMPONENT);
-}
-
-function goToMovesSelectionScreen() {
   $("#root").empty();
-  MovesSelectionScreen();
+  $("#root").append(IMPORT_SCREEN_COMPONENT);
 }
 
 //================================
 // MOVE SELECTION SCREEN
 //================================
 // Create moves dropdown
-function generateMovesDropdown() {
+function generateMovesDropdown(selectedValueId) {
   /*   let move_options = MOVEMENTS_SORTED.map((move) => {
     let move_value = move.name
       .toLowerCase()
@@ -272,21 +313,25 @@ function generateMovesDropdown() {
           .toLowerCase()
           .replaceAll(" ", "_")
           .replaceAll("/", "");
-        return `<option value="${move.id}-${move_value}">${move.name}</option>`;
+        return `<option value="${move.id}-${move_value}" ${selectedValueId && selectedValueId === move.id ? "selected" : ""}>${move.name}</option>`;
       })
       .join("");
     return `<optgroup label="${category}">${options}</optgroup>`;
   });
 
   return `<select name="movements" class="move_dropdown pointer">
-            <option value="" selected>--Choose an option--</option>
+            <option value="" ${!selectedValueId ? "selected" : ""}>--Choose an option--</option>
             ${optgroups.join("")}
           </select>`;
 }
 
 // Generate move component
-function getMovesComponent() {
-  return MOVE_LABEL(generateMovesDropdown());
+function getMovesComponent(exerciseCount, exerciseId, load) {
+  return MOVE_LABEL(
+    generateMovesDropdown(exerciseId || null),
+    exerciseCount || 1,
+    load || null,
+  );
 }
 
 // Add move label when clicking on the add button
@@ -401,14 +446,18 @@ function calculateTotalExerciseCount() {
 }
 
 // Function to calculate the whole workout duration taking into consideration all exercises and rest duration
-function calculateTotalWorkoutDuration() {
-  let exercisesTotalCount = $("#total_count");
-  let exerciseDurationInSec = $("#seconds_active");
-  let restDurationInSec = $("#seconds_rest");
+function calculateTotalWorkoutDuration(
+  totalCountExercises,
+  secondsActive,
+  secondsRest,
+) {
+  let exercisesTotalCount = totalCountExercises || $("#total_count").html();
+  let exerciseDurationInSec = secondsActive || $("#seconds_active").html();
+  let restDurationInSec = secondsRest || $("#seconds_rest").html();
 
   let totalWorkoutDurationInSec =
-    Number(exercisesTotalCount.html()) *
-    (Number(exerciseDurationInSec.html()) + Number(restDurationInSec.html()));
+    Number(exercisesTotalCount) *
+    (Number(exerciseDurationInSec) + Number(restDurationInSec));
 
   if (totalWorkoutDurationInSec < 60) {
     return {
@@ -517,32 +566,56 @@ function enableDraggableBehaviour() {
 }
 
 // Main function to generate move selection screen based on localStorage
-function MovesSelectionScreen() {
-  // Retrieves the current moves stored locally in the browser if any
-  const currentState = localStorage.getItem(STORAGE_KEYS[0]); //CHANGE THIS ASAP!!
+function MovesSelectionScreen(sessionBase64String) {
+  try {
+    //Empty root. Remove all current elements
+    $("#root").empty();
 
-  // Appends to root the main sections of the screen
-  $("#root").append(`<div id="workout_settings"></div>
+    // Appends to root the main sections of the screen
+    $("#root").append(`<div id="workout_settings"></div>
       <div id="moves_selection"></div>
       <div id="form_buttons"></div>`);
 
-  // Appends the workout config header to the first section
-  $("#workout_settings").append(WORKOUT_CONFIG);
+    // Appends the workout config header to the first section and form buttons above the footer
+    $("#workout_settings").append(WORKOUT_CONFIG);
+    $("#form_buttons").append(FORM_BUTTONS);
 
-  // Depending on the current state loaded in the previous step, the corresponding content is appended
-  currentState
-    ? $("#moves_selection").append(getMovesComponent())
-    : $("#form_buttons").append(FORM_BUTTONS);
+    // If a session string is provided, the moves will load and session details too
+    if (sessionBase64String && sessionBase64String.trim().length > 0) {
+      let parsedSession = parseProvidedSession(sessionBase64String).workout;
 
-  // Enables the move labels draggable behaviour
-  enableDraggableBehaviour();
+      updateWorkoutSettings(
+        parsedSession.totalExercisesCount,
+        calculateTotalWorkoutDuration(
+          parsedSession.totalExercisesCount,
+          parsedSession.secondsActive,
+          parsedSession.secondsRest,
+        ),
+        parsedSession.secondsActive,
+        parsedSession.secondsRest,
+      );
 
-  // Add event listener on change on the .move_dropdown elements to peform certain functions
-  $(document).on("change", ".move_dropdown", function () {
-    updateSelectionStyling(this);
-    updateWorkoutSettings(calculateTotalExerciseCount());
-    updateWorkoutSettings(null, calculateTotalWorkoutDuration());
-  });
+      let sessionMoves = parsedSession.exercises.map((exercise) => {
+        return getMovesComponent(exercise.count, exercise.exerciseId, "load");
+      });
+
+      $("#moves_selection").append(sessionMoves.join(""));
+    }
+
+    // Enables the move labels draggable behaviour
+    enableDraggableBehaviour();
+
+    // Add event listener on change on the .move_dropdown elements to peform certain functions
+    $(document).on("change", ".move_dropdown", function () {
+      updateSelectionStyling(this);
+      updateWorkoutSettings(calculateTotalExerciseCount());
+      updateWorkoutSettings(null, calculateTotalWorkoutDuration());
+    });
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while generating your Move Selection page:<br/><br/>${error}`,
+    );
+  }
 }
 
 //================================
@@ -557,9 +630,21 @@ function PlayScreen() {
     return;
   }
 
-  $("#root").empty();
-  $("#root").append(WORKOUT_PLAYCARD);
-  startWorkoutSession(workoutSession);
+  const session = newSessionObject();
+
+  try {
+    if (session && session.workout) {
+      $("#root").empty();
+      $("#root").append(WORKOUT_PLAYCARD);
+      startWorkoutSession(session.workout);
+    } else {
+      newErrorPopup(`No training session found.`);
+    }
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while trying to start training session:<br/><br/> ${error}`,
+    );
+  }
 }
 
 async function manageWakeLock(action) {

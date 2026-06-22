@@ -702,13 +702,12 @@ function breakbeat(action) {
 
 // WORK IN PROGRESS //
 countdownInterval = null;
-async function newCountDownSeconds(
-  seconds,
-  htmlElement,
-  digitsColour,
-  setTitleElement,
-  setTitle,
-) {
+async function newCountDownSeconds(seconds, cssClass, cardTitle, cardSubtitle) {
+  let sessionPlayCard = $("#workout_play_card");
+  let countDownElement = $("#timeBasedExercisesSeconds");
+  let setTitleElement = $("#workout_playcard_title");
+  let setSubtitleElement = $("#workout_playcard_subtitle");
+
   if (countdownInterval) {
     clearInterval(countdownInterval);
     countdownInterval = null;
@@ -724,10 +723,12 @@ async function newCountDownSeconds(
       }
 
       seconds--;
-      htmlElement.text(seconds.toString());
-      htmlElement.css("color", digitsColour);
-      setTitleElement.text(setTitle);
-      setTitleElement.css("color", digitsColour);
+      sessionPlayCard
+        .removeClass("rest_styling play_styling")
+        .addClass(cssClass);
+      countDownElement.text(seconds.toString());
+      setTitleElement.text(cardTitle);
+      setSubtitleElement.text(cardSubtitle);
     }, 1000);
   });
 }
@@ -739,6 +740,7 @@ async function startWorkoutSession(session) {
   let restTimeSeconds = session.secondsRest;
   let sessionExercises = session.exercises;
   let setTitleElement = $("#workout_playcard_title");
+  let setSubtitleElement = $("#workout_playcard_subtitle");
   arrayExercises = [];
 
   // Rest object
@@ -779,19 +781,27 @@ async function startWorkoutSession(session) {
     } else {
       breakbeat("pause");
     }
-    let color = index % 2 === 0 ? "#00bfff94" : "#ffb10094";
-    let setTitle =
-      index % 2 === 0 ? `${exercise.exerciseName} (ROUND ${index})` : "REST";
+    let styling = index % 2 === 0 ? "play_styling" : "rest_styling";
+    let cardTitle = "";
+    let cardSubtitle = "";
+
+    if (index % 2 === 0) {
+      cardTitle = exercise.exerciseName;
+      cardSubtitle = `ROUND ${index} / ${numOfExercises}`;
+    } else {
+      cardTitle = "REST";
+    }
+
     if (index === arrayExercises.length - 1) {
-      setTitle = `${exercise.exerciseName} (LAST ROUND)`;
+      cardTitle = exercise.exerciseName;
+      cardSubtitle = `LAST ROUND`;
     }
 
     await newCountDownSeconds(
       exercise.duration,
-      timeBasedExercisesTimer,
-      color,
-      setTitleElement,
-      setTitle,
+      styling,
+      cardTitle,
+      cardSubtitle,
     );
   }
 

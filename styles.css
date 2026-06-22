@@ -575,23 +575,40 @@ div.noselection:hover {
 /*================================*/
 /*================================*/
 #workout_play_card {
-  border: 1px solid;
   padding: 20px;
   margin: auto;
   border-radius: var(--radius);
-  background-color: #d1cdcd0f;
   width: 80%;
 }
 
 #workout_playcard_title {
-  border-bottom: 1px solid;
   font-size: 2rem;
   text-align: center;
+  max-height: 2rem;
+}
+
+#workout_playcard_subtitle {
+  font-size: 1rem;
+  text-align: center;
+  border-bottom: 1px solid;
+  padding-bottom: 1rem;
 }
 
 #workout_playcard_content {
   font-size: 6rem;
   margin: auto;
+}
+
+.rest_styling {
+  border: 1px solid;
+  background-color: #a87f331f;
+  color: #ffb10094;
+}
+
+.play_styling {
+  border: 1px solid;
+  background-color: #337ba81f;
+  color: #00bfff94;
 }
 
 /*================================*/

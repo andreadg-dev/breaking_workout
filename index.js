@@ -702,11 +702,18 @@ function breakbeat(action) {
 
 // WORK IN PROGRESS //
 countdownInterval = null;
-async function newCountDownSeconds(seconds, cssClass, cardTitle, cardSubtitle) {
+async function newCountDownSeconds(
+  seconds,
+  cssClass,
+  cardTitle,
+  cardSubtitle,
+  cardImg,
+) {
   let sessionPlayCard = $("#workout_play_card");
   let countDownElement = $("#timeBasedExercisesSeconds");
   let setTitleElement = $("#workout_playcard_title");
   let setSubtitleElement = $("#workout_playcard_subtitle");
+  let setCardImgElement = $("#workout_playcard_img");
 
   if (countdownInterval) {
     clearInterval(countdownInterval);
@@ -729,6 +736,7 @@ async function newCountDownSeconds(seconds, cssClass, cardTitle, cardSubtitle) {
       countDownElement.text(seconds.toString());
       setTitleElement.text(cardTitle);
       setSubtitleElement.text(cardSubtitle);
+      setCardImgElement.html(cardImg || "");
     }, 1000);
   });
 }
@@ -784,17 +792,21 @@ async function startWorkoutSession(session) {
     let styling = index % 2 === 0 ? "play_styling" : "rest_styling";
     let cardTitle = "";
     let cardSubtitle = "";
+    let cardImg = "";
 
     if (index % 2 === 0) {
       cardTitle = exercise.exerciseName;
       cardSubtitle = `ROUND ${index} / ${numOfExercises}`;
+      cardImg = MOVE_IMG_PLACEHOLDER;
     } else {
       cardTitle = "REST";
+      cardImg = REST_IMG;
     }
 
-    if (index === arrayExercises.length - 1) {
+    if (index === arrayExercises.length - 2) {
       cardTitle = exercise.exerciseName;
       cardSubtitle = `LAST ROUND`;
+      cardImg = MOVE_IMG_PLACEHOLDER;
     }
 
     await newCountDownSeconds(
@@ -802,6 +814,7 @@ async function startWorkoutSession(session) {
       styling,
       cardTitle,
       cardSubtitle,
+      cardImg,
     );
   }
 

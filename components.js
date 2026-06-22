@@ -281,10 +281,21 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
 // PLAY SCREEN
 //================================
 
-const WORKOUT_PLAYCARD = `<div id="workout_play_card" class="flex-column">
-    <div id="workout_playcard_title"></div>
-    <div id="workout_playcard_subtitle"></div>
-    <div id="workout_playcard_content" class="flex">
-        <div id="timeBasedExercisesSeconds">--</div>
-    </div>
+const WORKOUT_PLAYCARD = `<div>
+  <div id="workout_play_card" class="flex-column">
+      <div id="workout_playcard_title"></div>
+      <div id="workout_playcard_subtitle"></div>
+      <div id="workout_playcard_content" class="flex">
+          <div id="timeBasedExercisesSeconds">--</div>
+      </div>
+  </div>
+  <div id="workout_playcard_img"></div>
 </div>`;
+
+const REST_IMG = `<img
+        src="./images/rest.png"
+        alt="Image of a bboy resting" />`;
+
+const MOVE_IMG_PLACEHOLDER = `<img
+        src="./images/move.png"
+        alt="Image of a bboy doing footworks" />`;

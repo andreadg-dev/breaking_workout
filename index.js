@@ -1,17 +1,6 @@
 //================================
 // GLOBAL
 //================================
-const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {
-  const catCompare = a.category.localeCompare(b.category);
-  return catCompare !== 0 ? catCompare : a.name.localeCompare(b.name);
-});
-
-// Create an Array with 5 storage key names
-const STORAGE_KEYS = Array.from(
-  { length: 5 },
-  (_, index) => `breakinghiit_1rm_v${index}`,
-);
-
 function newSessionObject() {
   try {
     let sessionObject = {
@@ -820,6 +809,31 @@ async function startWorkoutSession(session) {
 
   // Request browser wake lock release after the session is over
   manageWakeLock("request_release");
+}
+
+//================================
+// MOVES OVERVIEW SCREEN
+//================================
+function MoveOverviewScreen() {
+  $("#root").empty();
+
+  let movesOverview = MOVEMENTS_SORTED.map((move) => {
+    return `<div class="move_overview">
+  <div class="move_overview_header">
+    <span>${move?.name}</span>
+    <span>${move?.category}</span>
+  </div>
+  <div class="move_overview_content">
+    <span>${move?.description}</span>
+    <span>${move?.media}</span>
+  </div>
+</div>`;
+  });
+
+  $("#root").append(movesOverview.join(""));
+
+  // Closes the navbar menu
+  $("#navbar_menu").prop("open", false);
 }
 
 //================================

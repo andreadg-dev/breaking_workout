@@ -106,6 +106,17 @@ const MOVEMENTS = [
   },
 ];
 
+const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {
+  const catCompare = a.category.localeCompare(b.category);
+  return catCompare !== 0 ? catCompare : a.name.localeCompare(b.name);
+});
+
+// Create an Array with 5 storage key names
+const STORAGE_KEYS = Array.from(
+  { length: 5 },
+  (_, index) => `breakinghiit_1rm_v${index}`,
+);
+
 const SESSION_SAMPLE = {
   stateName: "test session name",
   storageKey: "breakinghiit_1rm_v2",

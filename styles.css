@@ -42,6 +42,38 @@ body {
   font-size: var(--main-font-size);
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+#navbar_menu {
+  position: fixed;
+  top: 24px;
+  right: 2rem;
+}
+
+#navbar_menu_items {
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  min-width: max-content;
+  background-color: #000000;
+  padding: 15px;
+  border: 1px solid;
+  border-radius: 10px;
+  color: white;
+}
+
+#navbar_menu_items div {
+  padding: 4px 0;
+  border-bottom: 1px solid #ffffff33;
+}
+
+#navbar_menu_items div:last-child {
+  border-bottom: none;
+}
+
 #root {
   margin: 0 auto;
   padding: 5rem 1rem 3rem;
@@ -621,6 +653,33 @@ div.noselection:hover {
 #workout_playcard_img img {
   max-height: 400px;
   border-radius: var(--radius);
+}
+
+/*================================*/
+/*================================*/
+/* MOVE OVERVIEW SCREEN */
+/*================================*/
+/*================================*/
+
+.move_overview_header {
+  border: 1px solid #00f9ffb3;
+  padding: 7px 15px;
+  border-radius: var(--radius);
+  display: flex;
+  justify-content: space-between;
+  background-color: #04595b69;
+  color: #00f9ffb3;
+}
+
+.move_overview_content {
+  padding: 1rem;
+  border: 1px solid;
+  margin: 0 1rem 0 2rem;
+  border-top: none;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  background-color: #5b43184f;
+  color: #ffa500;
 }
 
 /*================================*/

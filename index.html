@@ -37,6 +37,7 @@
         <summary></summary>
         <div id="navbar_menu_items">
           <div onclick="MoveOverviewScreen()">Moves Overview</div>
+          <div onclick="SavedSessionsScreen()">Saved Sessions</div>
         </div>
       </details>
     </nav>
@@ -62,6 +63,8 @@
     <script>
       window.onload = (event) => {
         ImportWorkoutScreen();
+        toggleSavedSessionInfo();
+        toggleMoveOverviewInfo();
         setCopyright();
       };
     </script>

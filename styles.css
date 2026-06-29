@@ -61,13 +61,14 @@ nav {
   background-color: #000000;
   padding: 15px;
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: 5px;
   color: white;
 }
 
 #navbar_menu_items div {
   padding: 4px 0;
   border-bottom: 1px solid #ffffff33;
+  cursor: pointer;
 }
 
 #navbar_menu_items div:last-child {
@@ -139,6 +140,14 @@ nav {
     0 0 40px rgba(0, 236, 55, 0.4);
 }
 
+.hidden {
+  display: none;
+}
+
+.green {
+  color: green !important;
+}
+
 /*================================*/
 /*================================*/
 /* OVERLAY SCREEN */
@@ -208,7 +217,6 @@ nav {
 
 #my_navbar {
   border-bottom: 1px solid #00000036;
-  background-color: #00000014 !important;
   height: 4.5rem;
 }
 
@@ -661,10 +669,14 @@ div.noselection:hover {
 /*================================*/
 /*================================*/
 
+.move_overview {
+  font-family: "Fira Code";
+}
+
 .move_overview_header {
   border: 1px solid #00f9ffb3;
   padding: 7px 15px;
-  border-radius: var(--radius);
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
   background-color: #04595b69;
@@ -676,10 +688,87 @@ div.noselection:hover {
   border: 1px solid;
   margin: 0 1rem 0 2rem;
   border-top: none;
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
-  background-color: #5b43184f;
-  color: #ffa500;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: black;
+  color: white;
+}
+
+.move_overview_cat {
+  padding-right: 1rem;
+}
+
+.move_overview_index {
+  color: gray;
+}
+
+/*================================*/
+/*================================*/
+/* SAVED SESSIONS SCREEN */
+/*================================*/
+/*================================*/
+
+.saved_session {
+  margin: 1rem 2rem;
+  max-width: 90%;
+}
+
+.saved_session_header {
+  border: 1px solid;
+  padding: 7px 10px;
+  border-radius: 5px;
+  background-color: #72562769;
+  color: orange;
+  font-family: "Fira Code";
+  display: flex;
+}
+
+.saved_session_index {
+  color: gray;
+}
+
+.saved_session_header_right {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.saved_session_content {
+  font-family: "Fira Code";
+  border: 1px solid;
+  padding: 7px 10px;
+  margin-left: 2rem;
+  margin-right: 1rem;
+  border-top: none;
+  background-color: black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  word-break: break-word;
+}
+
+.saved_session_content div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.saved_session_content_json {
+  border-bottom: 1px solid #ffffff5c;
+  margin-bottom: 1rem;
+}
+
+.saved_session_content_left {
+  width: 4rem;
+}
+
+.saved_session_content_right {
+  color: white;
+  font-family: "Fira Code";
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.saved_session_content_base64string:hover {
+  color: orange;
 }
 
 /*================================*/

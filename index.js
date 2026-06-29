@@ -263,6 +263,27 @@ function newSessionStateNamePopup(storageKey, action) {
   newOverlayScreen("SESSION NAME", SESSION_NAME_POPUP(storageKey, action));
 }
 
+function copyToClipboard(element) {
+  const contentToCopy = $(element).text().trim();
+
+  navigator.clipboard
+    .writeText(contentToCopy)
+    .then(() => {
+      console.log("Copied to clipboard:", contentToCopy);
+      // Optionally, display a notification or provide visual feedback to the user
+    })
+    .catch((error) => {
+      newErrorPopup(`Error copying to clipboard: ${error}`);
+    });
+
+  //Displays temporarily the alert div when copying a card-body to the clipboard
+  $(element).addClass("green"); // Add class to show the alert
+  // Set timeout to remove the class after 2 seconds
+  setTimeout(function () {
+    $(element).removeClass("green"); // Remove class to hide the alert
+  }, 2000);
+}
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
@@ -814,23 +835,94 @@ async function startWorkoutSession(session) {
 //================================
 // MOVES OVERVIEW SCREEN
 //================================
+function toggleMoveOverviewInfo() {
+  $(document).on("click", ".move_overview_visibility_icon", function () {
+    const sessionContent = $(this)
+      .closest(".move_overview")
+      .find(".move_overview_content");
+
+    // Slow toggle: animate show/hide instead of instantly switching a CSS class
+    const durationMs = 350; // increase to slow down more (e.g. 400, 600)
+
+    if (sessionContent.is(":visible")) {
+      $(this).html(CLOSEDEYE_ICON);
+      sessionContent.stop(true, true).slideUp(durationMs);
+    } else {
+      $(this).html(OPENEYE_ICON);
+      sessionContent.stop(true, true).slideDown(durationMs);
+    }
+  });
+}
+
 function MoveOverviewScreen() {
   $("#root").empty();
 
   let movesOverview = MOVEMENTS_SORTED.map((move) => {
-    return `<div class="move_overview">
-  <div class="move_overview_header">
-    <span>${move?.name}</span>
-    <span>${move?.category}</span>
-  </div>
-  <div class="move_overview_content">
-    <span>${move?.description}</span>
-    <span>${move?.media}</span>
-  </div>
-</div>`;
+    return MOVE_OVERVIEW_COMPONENT(
+      move?.id,
+      move?.name,
+      move?.category,
+      move?.description,
+      move?.media,
+    );
   });
 
   $("#root").append(movesOverview.join(""));
+
+  // Closes the navbar menu
+  $("#navbar_menu").prop("open", false);
+}
+
+//================================
+// SAVED SESSIONS SCREEN
+//================================
+function toggleSavedSessionInfo() {
+  $(document).on("click", ".saved_session_visibility_icon", function () {
+    const sessionContent = $(this)
+      .closest(".saved_session")
+      .find(".saved_session_content");
+
+    // Slow toggle: animate show/hide instead of instantly switching a CSS class
+    const durationMs = 350; // increase to slow down more (e.g. 400, 600)
+
+    if (sessionContent.is(":visible")) {
+      $(this).html(CLOSEDEYE_ICON);
+      sessionContent.stop(true, true).slideUp(durationMs);
+    } else {
+      $(this).html(OPENEYE_ICON);
+      sessionContent.stop(true, true).slideDown(durationMs);
+    }
+  });
+}
+
+function SavedSessionsScreen() {
+  $("#root").empty();
+
+  let savedSessions = STORAGE_KEYS.map((storageKey, index) => {
+    let currentState = localStorage.getItem(storageKey);
+    if (currentState && currentState.trim() != "") {
+      let parsedStorageValue = JSON.stringify(
+        JSON.parse(window.atob(currentState)),
+        null,
+        2,
+      );
+
+      return SAVED_SESSION_COMPONENT(
+        index,
+        storageKey,
+        parsedStorageValue,
+        currentState,
+      );
+    }
+  });
+
+  if (savedSessions.length > 0) {
+    $("#root").append(savedSessions.join(""));
+  } else {
+    $("#root").append(
+      `<div class="nosavedsession_window">NO SAVED SESSION FOUND!</div>`,
+    );
+  }
 
   // Closes the navbar menu
   $("#navbar_menu").prop("open", false);

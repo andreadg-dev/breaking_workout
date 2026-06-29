@@ -63,6 +63,7 @@ nav {
   border: 1px solid;
   border-radius: 5px;
   color: white;
+  font-family: "Fira Code";
 }
 
 #navbar_menu_items div {
@@ -769,6 +770,18 @@ div.noselection:hover {
 
 .saved_session_content_base64string:hover {
   color: orange;
+}
+
+.nosavedsession_window {
+  font-family: "Fira Code";
+  border: 1px solid;
+  margin: 1rem;
+  padding: 3rem;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  background-color: #7524246e;
+  color: #f7a543;
 }
 
 /*================================*/

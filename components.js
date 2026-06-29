@@ -346,6 +346,7 @@ const MOVE_OVERVIEW_COMPONENT = (
 
 const SAVED_SESSION_COMPONENT = (
   index,
+  sessionName,
   storageKey,
   parsedStorageValue,
   currentState,
@@ -354,7 +355,7 @@ const SAVED_SESSION_COMPONENT = (
         <div class="saved_session_header">
           <span class="saved_session_index">${index}.</span>
           <div class="saved_session_header_right">
-            <span>${storageKey}</span>
+            <span>${sessionName} (${storageKey})</span>
             <span class="saved_session_visibility_icon pointer">${OPENEYE_ICON}</span>
           </div>
         </div>

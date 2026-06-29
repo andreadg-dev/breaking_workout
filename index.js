@@ -290,6 +290,9 @@ function copyToClipboard(element) {
 function ImportWorkoutScreen() {
   $("#root").empty();
   $("#root").append(IMPORT_SCREEN_COMPONENT);
+
+  // Closes the navbar menu
+  $("#navbar_menu").prop("open", false);
 }
 
 //================================
@@ -900,7 +903,9 @@ function SavedSessionsScreen() {
 
   let savedSessions = STORAGE_KEYS.map((storageKey, index) => {
     let currentState = localStorage.getItem(storageKey);
+
     if (currentState && currentState.trim() != "") {
+      let session = JSON.parse(window.atob(currentState));
       let parsedStorageValue = JSON.stringify(
         JSON.parse(window.atob(currentState)),
         null,
@@ -909,6 +914,7 @@ function SavedSessionsScreen() {
 
       return SAVED_SESSION_COMPONENT(
         index,
+        session.stateName,
         storageKey,
         parsedStorageValue,
         currentState,
@@ -916,7 +922,9 @@ function SavedSessionsScreen() {
     }
   });
 
-  if (savedSessions.length > 0) {
+  let validSessions = savedSessions.filter(Boolean);
+
+  if (validSessions.length > 0) {
     $("#root").append(savedSessions.join(""));
   } else {
     $("#root").append(

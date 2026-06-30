@@ -813,6 +813,10 @@ async function startWorkoutSession(session) {
       cardImg = MOVE_IMG_PLACEHOLDER;
     } else {
       cardTitle = "REST";
+      cardSubtitle =
+        arrayExercises.length > index + 1
+          ? `NEXT: ${arrayExercises[index + 1]?.exerciseName}`
+          : "";
       cardImg = REST_IMG;
     }
 

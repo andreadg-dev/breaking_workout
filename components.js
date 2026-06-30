@@ -293,9 +293,12 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
 //================================
 
 const WORKOUT_PLAYCARD = `<div>
-  <div id="workout_play_card" class="flex-column">
-      <div id="workout_playcard_title"></div>
-      <div id="workout_playcard_subtitle"></div>
+  <div id="workout_play_card" class="flex">
+      <div class="flex-column">
+        <div id="workout_playcard_title"></div>
+        <div id="workout_playcard_subtitle"></div>
+      </div>
+      <div class="separator"></div>
       <div id="workout_playcard_content" class="flex">
           <div id="timeBasedExercisesSeconds">--</div>
       </div>

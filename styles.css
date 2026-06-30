@@ -49,7 +49,7 @@ nav {
 
 #navbar_menu {
   position: fixed;
-  top: 24px;
+  top: 0.8rem;
   right: 2rem;
 }
 
@@ -66,6 +66,12 @@ nav {
   font-family: "Fira Code";
 }
 
+.navbar-brand {
+  top: 4px;
+  position: absolute;
+  padding: 0;
+}
+
 #navbar_menu_items div {
   padding: 4px 0;
   border-bottom: 1px solid #ffffff33;
@@ -78,7 +84,7 @@ nav {
 
 #root {
   margin: 0 auto;
-  padding: 5rem 1rem 3rem;
+  padding: 4rem 1rem 1rem;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -217,8 +223,8 @@ nav {
 }
 
 #my_navbar {
-  border-bottom: 1px solid #00000036;
-  height: 4.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.516);
+  height: 3rem;
 }
 
 /*================================*/
@@ -375,8 +381,8 @@ nav {
 }
 
 #import_workout_btn {
-  background-color: rgb(131 215 184);
-  color: #306e38;
+  color: rgb(131 215 184);
+  background-color: #306e38;
 }
 
 #import_workout_btn:hover {
@@ -385,8 +391,8 @@ nav {
 }
 
 #create_workout_btn {
-  background-color: rgb(123 173 208);
-  color: rgb(26 44 98);
+  color: rgb(123 173 208);
+  background-color: rgb(26 44 98);
 }
 
 #create_workout_btn:hover {
@@ -395,8 +401,8 @@ nav {
 }
 
 #load_workout_btn {
-  background-color: #efcb87;
-  color: #87714a;
+  color: #efcb87;
+  background-color: #87714a;
 }
 
 #load_workout_btn:hover {
@@ -519,6 +525,7 @@ nav {
   background: rgba(18, 25, 38, 0.6);
   flex: 1 1 calc(50% - 0.75rem);
   height: 2.4rem;
+  min-width: 22rem;
 }
 
 .move_label:hover {
@@ -622,34 +629,37 @@ div.noselection:hover {
   width: 80%;
 }
 
+#workout_play_card > .flex-column {
+  width: 6rem;
+}
+
 #workout_playcard_title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-align: center;
   max-height: 2rem;
 }
 
 #workout_playcard_subtitle {
-  font-size: 1rem;
+  font-size: 0.8rem;
   text-align: center;
-  border-bottom: 1px solid;
   padding-bottom: 1rem;
 }
 
 #workout_playcard_content {
-  font-size: 4rem;
+  font-size: 3rem;
   margin: auto;
 }
 
 .rest_styling {
   border: 1px solid;
   background-color: #a87f331f;
-  color: #ffb10094;
+  color: #fe7601;
 }
 
 .play_styling {
   border: 1px solid;
   background-color: #337ba81f;
-  color: #00bfff94;
+  color: #72ddfd;
 }
 
 #workout_playcard_img {

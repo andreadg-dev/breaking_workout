@@ -11,6 +11,10 @@ const FLOPPY_DISK = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
   <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v3.5A1.5 1.5 0 0 1 11.5 6h-7A1.5 1.5 0 0 1 3 4.5V1H1.5a.5.5 0 0 0-.5.5m9.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5z"/>
 </svg>`;
 
+const RECYCLING_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-recycle" viewBox="0 0 16 16">
+  <path d="M9.302 1.256a1.5 1.5 0 0 0-2.604 0l-1.704 2.98a.5.5 0 0 0 .869.497l1.703-2.981a.5.5 0 0 1 .868 0l2.54 4.444-1.256-.337a.5.5 0 1 0-.26.966l2.415.647a.5.5 0 0 0 .613-.353l.647-2.415a.5.5 0 1 0-.966-.259l-.333 1.242zM2.973 7.773l-1.255.337a.5.5 0 1 1-.26-.966l2.416-.647a.5.5 0 0 1 .612.353l.647 2.415a.5.5 0 0 1-.966.259l-.333-1.242-2.545 4.454a.5.5 0 0 0 .434.748H5a.5.5 0 0 1 0 1H1.723A1.5 1.5 0 0 1 .421 12.24zm10.89 1.463a.5.5 0 1 0-.868.496l1.716 3.004a.5.5 0 0 1-.434.748h-5.57l.647-.646a.5.5 0 1 0-.708-.707l-1.5 1.5a.5.5 0 0 0 0 .707l1.5 1.5a.5.5 0 1 0 .708-.707l-.647-.647h5.57a1.5 1.5 0 0 0 1.302-2.244z"/>
+</svg>`;
+
 const COUNTING_ICON = `<svg xmlns="http://w3.org" viewBox="0 0 22 22" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <line x1="6" y1="5" x2="6" y2="19" />
   <line x1="10" y1="5" x2="10" y2="19" />
@@ -149,12 +153,17 @@ const SAVELOAD_SESSION_POPUP = (
   let saveState =
     status === "used" ? "OVERWRITE" : status === "empty" && "SAVE";
 
+  let saveStateIcn =
+    status === "used"
+      ? `${FLOPPY_DISK}<span style="margin-right:5px"></span>${RECYCLING_ICON}`
+      : status === "empty" && FLOPPY_DISK;
+
   let saveLoadBtn =
     action === "save"
       ? `<div 
         class="popup_btn popup_${saveState.toLowerCase()}_btn pointer"
         onClick="newSessionStateNamePopup('${storageKey}','${saveState}')"
-        >${saveState}
+        >${saveStateIcn}
     </div>`
       : `<div 
         class="popup_btn popup_load_btn pointer"
@@ -168,7 +177,7 @@ const SAVELOAD_SESSION_POPUP = (
             <span class="popup_storage_line_left_index">${index}.</span> <span>${stateName}</span>
             <span class="storage_status storage_status_${status}">${status}</span>
           </div>
-          <span class="storage_key">storage key: ${storageKey}</span>
+          <span class="storage_key">key: ${storageKey}</span>
         </div>
         ${saveLoadBtn}
       </div>`;

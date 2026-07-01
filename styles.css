@@ -161,7 +161,7 @@ nav {
 /*================================*/
 /*================================*/
 #overlay_screen {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -304,8 +304,9 @@ nav {
 }
 
 .popup_load_btn {
-  background-color: #efcb87;
-  color: #87714a;
+  border: 1px solid #efff00;
+  background: #e0bd405c;
+  color: #efff00;
 }
 
 .popup_load_btn:hover {
@@ -401,8 +402,9 @@ nav {
 }
 
 #load_workout_btn {
-  color: #efcb87;
-  background-color: #87714a;
+  border: 1px solid #efff00;
+  background: #e0bd405c;
+  color: #efff00;
 }
 
 #load_workout_btn:hover {
@@ -636,13 +638,13 @@ div.noselection:hover {
 #workout_playcard_title {
   font-size: 1.5rem;
   text-align: center;
-  max-height: 2rem;
+  max-height: 4rem;
+  line-height: 1.1;
 }
 
 #workout_playcard_subtitle {
   font-size: 0.8rem;
   text-align: center;
-  padding-bottom: 1rem;
 }
 
 #workout_playcard_content {

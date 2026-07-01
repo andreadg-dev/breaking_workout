@@ -284,15 +284,31 @@ function copyToClipboard(element) {
   }, 2000);
 }
 
+function navbarMenuState() {
+  // Prevent clicks inside the menu from closing it
+  $("#navbar_menu").on("click", function (e) {
+    e.stopPropagation();
+  });
+
+  // Close menu when clicking anywhere else
+  $(document).on("click", function () {
+    $("#navbar_menu").prop("open", false);
+  });
+}
+
+function stopBreakbeat() {
+  breakbeat("pause");
+  clearInterval(countdownInterval);
+}
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
 function ImportWorkoutScreen() {
+  stopBreakbeat();
+
   $("#root").empty();
   $("#root").append(IMPORT_SCREEN_COMPONENT);
-
-  // Closes the navbar menu
-  $("#navbar_menu").prop("open", false);
 }
 
 //================================
@@ -580,6 +596,8 @@ function enableDraggableBehaviour() {
 
 // Main function to generate move selection screen based on localStorage
 function MovesSelectionScreen(sessionBase64String) {
+  stopBreakbeat();
+
   try {
     //Empty root. Remove all current elements
     $("#root").empty();
@@ -862,6 +880,8 @@ function toggleMoveOverviewInfo() {
 }
 
 function MoveOverviewScreen() {
+  stopBreakbeat();
+
   $("#root").empty();
 
   let movesOverview = MOVEMENTS_SORTED.map((move) => {
@@ -903,6 +923,8 @@ function toggleSavedSessionInfo() {
 }
 
 function SavedSessionsScreen() {
+  stopBreakbeat();
+
   $("#root").empty();
 
   let savedSessions = STORAGE_KEYS.map((storageKey, index) => {

@@ -676,6 +676,10 @@ div.noselection:hover {
   border-radius: var(--radius);
 }
 
+#volume_control {
+  margin: auto;
+}
+
 /*================================*/
 /*================================*/
 /* MOVE OVERVIEW SCREEN */

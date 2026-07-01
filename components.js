@@ -109,6 +109,10 @@ const CLOSEDEYE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="16" heigh
   <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
 </svg>`;
 
+const VOLUME_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-volume-down" viewBox="0 0 16 16">
+  <path d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A.5.5 0 0 0 3 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 9 12zM6.312 6.39 8 5.04v5.92L6.312 9.61A.5.5 0 0 0 6 9.5H4v-3h2a.5.5 0 0 0 .312-.11M12.025 8a4.5 4.5 0 0 1-1.318 3.182L10 10.475A3.5 3.5 0 0 0 11.025 8 3.5 3.5 0 0 0 10 5.525l.707-.707A4.5 4.5 0 0 1 12.025 8"/>
+</svg>`;
+
 // OTHER GLOBAL COMPONENTS
 const SEPARATOR = `<div class="separator"></div>`;
 
@@ -302,7 +306,8 @@ const WORKOUT_CONFIG = `<div id="workout_config_card">
 //================================
 
 const WORKOUT_PLAYCARD = `<div>
-  <div id="workout_play_card" class="flex">
+  <div id="workout_play_card" class="flex-column">
+    <div class="flex">
       <div class="flex-column">
         <div id="workout_playcard_title"></div>
         <div id="workout_playcard_subtitle"></div>
@@ -310,7 +315,14 @@ const WORKOUT_PLAYCARD = `<div>
       <div class="separator"></div>
       <div id="workout_playcard_content" class="flex">
           <div id="timeBasedExercisesSeconds">--</div>
+          <div id="pause_btn" onclick="toggleWorkoutPause()">${PAUSE_ICON}</div>
       </div>
+    </div>
+    <div id="volume_control" class="flex">
+        ${VOLUME_ICON}
+        <input type="range" id="volume_slider" min="0" max="1" step="0.05" value="1"
+            oninput="setVolume(this.value)">
+    </div>
   </div>
   <div id="workout_playcard_img"></div>
 </div>`;

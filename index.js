@@ -297,6 +297,7 @@ function navbarMenuState() {
 }
 
 function stopBreakbeat() {
+  workoutPaused = false;
   breakbeat("pause");
   clearInterval(countdownInterval);
 }
@@ -714,7 +715,7 @@ async function manageWakeLock(action) {
 const breakbeatAudio = new Audio("./audio/funky_deegeeace.mp3");
 function breakbeat(action) {
   if (action === "play") {
-    breakbeatAudio.volume = 1;
+    breakbeatAudio.volume = Number($("#volume_slider").val() ?? 1);
     breakbeatAudio.currentTime = 0;
     breakbeatAudio.play();
   }
@@ -731,8 +732,28 @@ function breakbeat(action) {
   }
 }
 
-// WORK IN PROGRESS //
+// Function to pause or play the workout session
+function toggleWorkoutPause() {
+  workoutPaused = !workoutPaused;
+
+  if (workoutPaused) {
+    breakbeat("pause");
+    $("#pause_btn").html(PLAY_ICON);
+  } else {
+    breakbeatAudio.volume = Number($("#volume_slider").val() ?? 1); // use slider value
+    breakbeatAudio.play(); // resume without resetting currentTime
+    $("#pause_btn").html(PAUSE_ICON);
+  }
+}
+
+// Adjust breakbeat volume
+function setVolume(value) {
+  breakbeatAudio.volume = Number(value);
+}
+
+// Update playcard countdown
 countdownInterval = null;
+let workoutPaused = false;
 async function newCountDownSeconds(
   seconds,
   cssClass,
@@ -753,6 +774,8 @@ async function newCountDownSeconds(
 
   return new Promise((resolve) => {
     countdownInterval = setInterval(() => {
+      if (workoutPaused) return; // freeze the countdown
+
       if (seconds === 0) {
         clearInterval(countdownInterval);
         countdownInterval = null;

@@ -133,11 +133,16 @@ const OVERLAY_COMPONENT = (header, content, notificationType) => {
   return `<div id="overlay_screen">
     <div id="overlay_screen_card" class="flex-column ${notificationItems ? notificationItems.glow : ""}">   
         <div id="overlay_screen_header">
-            ${notificationItems ? notificationItems.icn : ""}
-            <button onClick="closeOverlayScreen(this)" id="overlay_screen_closebtn" type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">${CLOSE_ICON}</span>
-            </button>
-            <span>${header}</span></div>
+            <div class="overlay_header_slot">
+                ${notificationItems ? notificationItems.icn : ""}
+            </div>
+            <span>${header}</span>
+            <div class="overlay_header_slot overlay_header_slot_right">
+                <button onClick="closeOverlayScreen(this)" id="overlay_screen_closebtn" type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">${CLOSE_ICON}</span>
+                </button>
+            </div>
+        </div>
         <div id="overlay_screen_content">${content}</div>
     </div>
 </div>`;
@@ -181,7 +186,7 @@ const SAVELOAD_SESSION_POPUP = (
             <span class="popup_storage_line_left_index">${index}.</span> <span>${stateName}</span>
             <span class="storage_status storage_status_${status}">${status}</span>
           </div>
-          <span class="storage_key">key: ${storageKey}</span>
+          <span class="storage_key">${storageKey}</span>
         </div>
         ${saveLoadBtn}
       </div>`;
@@ -194,7 +199,7 @@ const SESSION_NAME_POPUP = (storageKey, action) => {
       <input 
         type="text" 
         maxlength="${THRESHOLDS.maxSessionNameChars}" 
-        minlength="${THRESHOLDS.maxSessionNameChars}" 
+        minlength="${THRESHOLDS.minSessionNameChars}" 
         name="session_name" 
         id="session_name_input" 
         placeholder="Unintitled"
@@ -309,12 +314,12 @@ const WORKOUT_PLAYCARD = `<div>
   <div id="workout_play_card" class="flex-column">
     <div class="flex">
       <div class="flex-column">
-        <div id="workout_playcard_title"></div>
+        <div id="workout_playcard_title">LOADING...</div>
         <div id="workout_playcard_subtitle"></div>
       </div>
       <div class="separator"></div>
       <div id="workout_playcard_content" class="flex">
-          <div id="timeBasedExercisesSeconds">--</div>
+          <div id="timeBasedExercisesSeconds">0</div>
           <div id="pause_btn" onclick="toggleWorkoutPause()">${PAUSE_ICON}</div>
       </div>
     </div>

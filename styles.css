@@ -747,6 +747,54 @@ div.noselection:hover {
   border-bottom-right-radius: 5px;
   background-color: black;
   color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.move_overview_content_media {
+  height: 400px;
+  width: 225px;
+  display: flex;
+}
+
+.move_overview_content_nomedia {
+  background-color: #80808066;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  font-size: large;
+  font-weight: bold;
+  position: relative; /* ← add */
+  overflow: hidden;
+}
+
+.move_overview_content_nomedia::before,
+.move_overview_content_nomedia::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 0;
+  border-top: 2px dashed #ffffff4f;
+  top: 50%;
+  left: 50%;
+}
+
+.move_overview_content_nomedia::before {
+  transform: translate(-50%, -50%) rotate(60deg);
+}
+
+.move_overview_content_nomedia::after {
+  transform: translate(-50%, -50%) rotate(-60deg);
+}
+
+.move_overview_content_description {
+  padding: 0.5rem 1rem;
+  max-width: 23rem;
 }
 
 .move_overview_cat {
@@ -836,6 +884,12 @@ div.noselection:hover {
   font-size: 1.5rem;
   background-color: #7524246e;
   color: #f7a543;
+}
+
+.no-loading-data {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 /*================================*/

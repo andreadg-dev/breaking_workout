@@ -241,8 +241,13 @@ function newSessionStatePopup(action) {
       }
     });
 
-    if (currentSessionSates.length < 1) {
-      newOverlayScreen(action.toUpperCase(), "NO DATA TO BE LOADED!");
+    let validSessionStates = currentSessionSates.filter(Boolean);
+
+    if (validSessionStates.length < 1) {
+      newOverlayScreen(
+        action.toUpperCase(),
+        `<div class="no-loading-data">⚠️ NO DATA TO BE LOADED!</div>`,
+      );
     } else {
       newOverlayScreen(
         action.toUpperCase(),

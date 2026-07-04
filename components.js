@@ -113,8 +113,15 @@ const VOLUME_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="
   <path d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A.5.5 0 0 0 3 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 9 12zM6.312 6.39 8 5.04v5.92L6.312 9.61A.5.5 0 0 0 6 9.5H4v-3h2a.5.5 0 0 0 .312-.11M12.025 8a4.5 4.5 0 0 1-1.318 3.182L10 10.475A3.5 3.5 0 0 0 11.025 8 3.5 3.5 0 0 0 10 5.525l.707-.707A4.5 4.5 0 0 1 12.025 8"/>
 </svg>`;
 
+const WARNING_TRIANGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+  <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+  <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+</svg>`;
+
 // OTHER GLOBAL COMPONENTS
 const SEPARATOR = `<div class="separator"></div>`;
+
+const NOMEDIA_COMPONENT = `<div class="move_overview_content_nomedia">NO MEDIA AVAILABLE</div>`;
 
 const OVERLAY_COMPONENT = (header, content, notificationType) => {
   let notificationItems =
@@ -363,8 +370,8 @@ const MOVE_OVERVIEW_COMPONENT = (
     </div>
   </div>
   <div class="move_overview_content">
-    <span>${moveDescription || ""}</span>
-    <span>${moveMedia || ""}</span>
+    <div class="move_overview_content_description">${moveDescription || ""}</div>
+    <div class="move_overview_content_media">${moveMedia || NOMEDIA_COMPONENT}</div>
   </div>
 </div>`;
 };

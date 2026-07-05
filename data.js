@@ -104,6 +104,27 @@ const MOVEMENTS = [
     description:
       "A dynamic upside-down pose where the hips are high and legs are bent or tucked, often supported by shoulders or hands.",
   },
+  {
+    id: "2f7c4a1e",
+    name: "L-Sit",
+    category: "Freeze",
+    description:
+      "A static hold where the legs are extended horizontally while balancing on both hands, demanding core and hip flexor strength.",
+  },
+  {
+    id: "5b9d3e6f",
+    name: "Handstand",
+    category: "Freeze",
+    description:
+      "A vertical balance held on both hands with the body fully extended overhead, requiring shoulder strength, alignment, and body control.",
+  },
+  {
+    id: "8a1c7f2d",
+    name: "Tuck Planche",
+    category: "Freeze",
+    description:
+      "A static hold where the hips are elevated and legs are tucked into the chest while balancing on both hands parallel to the ground.",
+  },
 ];
 
 const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {

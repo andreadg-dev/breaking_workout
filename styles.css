@@ -652,6 +652,29 @@ div.noselection:hover {
 
 /*================================*/
 /*================================*/
+/* READY SET GO SCREEN */
+/*================================*/
+/*================================*/
+
+#readysetgo_overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--main-background-color);
+}
+
+#readysetgo_text {
+  font-size: 5rem;
+  font-weight: 700;
+  color: #72ddfd;
+  letter-spacing: 0.1em;
+}
+
+/*================================*/
+/*================================*/
 /* PLAY SCREEN */
 /*================================*/
 /*================================*/

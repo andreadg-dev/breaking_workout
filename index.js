@@ -659,7 +659,68 @@ function MovesSelectionScreen(sessionBase64String) {
 // PLAY SCREEN FUNCTIONS
 //================================
 
-function PlayScreen() {
+function playBeep(type) {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  if (type === "go") {
+    // Rising tone: lower → higher pitch, longer duration
+    oscillator.frequency.setValueAtTime(700, audioCtx.currentTime);
+    oscillator.frequency.linearRampToValueAtTime(
+      1400,
+      audioCtx.currentTime + 0.3,
+    );
+    gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioCtx.currentTime + 0.5,
+    );
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.5);
+  } else {
+    // Short flat beep for READY / SET
+    oscillator.frequency.setValueAtTime(520, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.001,
+      audioCtx.currentTime + 0.15,
+    );
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.15);
+  }
+}
+
+function showReadySetGo() {
+  return new Promise((resolve) => {
+    const words = ["READY", "SET", "GO!"];
+    let index = 0;
+
+    $("body").append(
+      `<div id="readysetgo_overlay"><span id="readysetgo_text"></span></div>`,
+    );
+
+    const showNext = () => {
+      if (index >= words.length) {
+        $("#readysetgo_overlay").remove();
+        resolve();
+        return;
+      }
+      const word = words[index];
+      $("#readysetgo_text").text(word);
+      playBeep(word === "GO!" ? "go" : "ready"); // ← add this line
+      index++;
+      setTimeout(showNext, 1000);
+    };
+
+    showNext();
+  });
+}
+
+async function PlayScreen() {
   if (Number($("#total_count").html()) < THRESHOLDS.minExercisesInWorkout) {
     newErrorPopup(
       `You cannot start a workout session with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
@@ -673,6 +734,7 @@ function PlayScreen() {
     if (session && session.workout) {
       $("#root").empty();
       $("#root").append(WORKOUT_PLAYCARD);
+      await showReadySetGo();
       startWorkoutSession(session.workout);
     } else {
       newErrorPopup(`No training session found.`);

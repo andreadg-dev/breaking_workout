@@ -389,6 +389,7 @@ const SAVED_SESSION_COMPONENT = (
 ) => {
   return `<div class="saved_session">
         <div class="saved_session_header">
+          <span class="saved_session_bin pointer" onClick="removeSavedSession(this, '${storageKey}')">${BIN_ICON}</span>
           <span class="saved_session_index">${index}.</span>
           <div class="saved_session_header_right">
             <span>${sessionName} (${storageKey})</span>

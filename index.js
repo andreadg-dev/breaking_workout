@@ -990,6 +990,17 @@ function SavedSessionsScreen() {
   $("#navbar_menu").prop("open", false);
 }
 
+// Remove move label when clicking on the bin button
+function removeSavedSession(element, storageKey) {
+  $(element).closest(".saved_session").remove();
+
+  // Remove the data saved in local storage
+  localStorage.removeItem(storageKey);
+
+  // Call saved sessions screen so to show the remaining saved session or the warning message
+  SavedSessionsScreen();
+}
+
 //================================
 // FOOTER FUNCTIONS
 //================================
@@ -999,6 +1010,5 @@ function setCopyright() {
     `Copyright ©${new Date().getFullYear()} ${$("#copyright").html()}`,
   );
 }
-
 
 //pushing again

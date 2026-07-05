@@ -826,6 +826,10 @@ div.noselection:hover {
   display: flex;
 }
 
+.saved_session_bin {
+  padding-right: 10px;
+}
+
 .saved_session_index {
   color: gray;
 }

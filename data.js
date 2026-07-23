@@ -125,6 +125,27 @@ const MOVEMENTS = [
     description:
       "A static hold where the hips are elevated and legs are tucked into the chest while balancing on both hands parallel to the ground.",
   },
+  {
+    id: "6c4d9a2e",
+    name: "Elbow Freeze",
+    category: "Freeze",
+    description:
+      "A freeze where you balance your entire body weight on one or both elbows.",
+  },
+  {
+    id: "3f1b8c7d",
+    name: "Shoulder Freeze",
+    category: "Freeze",
+    description:
+      "An inverted freeze balancing on one shoulder with the hips elevated and legs extended or split overhead.",
+  },
+  {
+    id: "0e5a2f9b",
+    name: "Handstand Freeze",
+    category: "Freeze",
+    description:
+      "A vertical freeze held on both hands with the body fully extended overhead, locked in place to the beat with controlled balance and body tension.",
+  },
 ];
 
 const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {

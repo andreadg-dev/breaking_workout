@@ -917,7 +917,7 @@ async function startWorkoutSession(session) {
 
     if (index % 2 === 0) {
       cardTitle = exercise.exerciseName;
-      cardSubtitle = `ROUND ${index} / ${numOfExercises}`;
+      cardSubtitle = `ROUND ${index / 2 + 1} / ${numOfExercises}`;
       cardImg = MOVE_IMG_PLACEHOLDER;
     } else {
       cardTitle = "REST";

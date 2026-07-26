@@ -146,6 +146,13 @@ const MOVEMENTS = [
     description:
       "A vertical freeze held on both hands with the body fully extended overhead, locked in place to the beat with controlled balance and body tension.",
   },
+  {
+    id: "1e5a2f8c",
+    name: "Head Freeze",
+    category: "Freeze",
+    description:
+      "A foundational static pose where you balance your body weight using a stable three-point triangle base formed by your head and both hands.",
+  },
 ];
 
 const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {

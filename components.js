@@ -335,6 +335,12 @@ const WORKOUT_PLAYCARD = `<div>
         <input type="range" id="volume_slider" min="0" max="1" step="0.05" value="1"
             oninput="setVolume(this.value)">
     </div>
+    <div id="session-duration-progress" class="flex">
+      <div id="session-time-elapsed"></div>
+      <div>/</div>
+      <div id="session-total-duration"></div>
+      <div>${CLOCK_ICON}</div>
+    </div>
   </div>
   <div id="workout_playcard_img"></div>
 </div>`;

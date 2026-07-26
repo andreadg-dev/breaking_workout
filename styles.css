@@ -84,7 +84,7 @@ nav {
 
 #root {
   margin: 0 auto;
-  padding: 4rem 1rem 1rem;
+  padding: 3rem 1rem 1rem;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -683,7 +683,7 @@ div.noselection:hover {
   margin: auto;
   border-radius: var(--radius);
   width: 80%;
-  height: 10rem;
+  height: 12rem;
   border: 1px solid;
   background-color: #a87f331f;
   color: lightgray;
@@ -739,6 +739,10 @@ div.noselection:hover {
 
 #volume_control {
   margin: auto;
+}
+
+#session-duration-progress {
+  justify-content: center;
 }
 
 /*================================*/

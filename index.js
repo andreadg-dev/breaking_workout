@@ -307,6 +307,12 @@ function stopBreakbeat() {
   clearInterval(countdownInterval);
 }
 
+function formatTime(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}' ${String(s).padStart(2, "0")}"`;
+}
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
@@ -821,6 +827,7 @@ function setVolume(value) {
 // Update playcard countdown
 countdownInterval = null;
 let workoutPaused = false;
+let sessionElapsed = 0;
 async function newCountDownSeconds(
   seconds,
   cssClass,
@@ -850,6 +857,9 @@ async function newCountDownSeconds(
         return;
       }
 
+      sessionElapsed++;
+      $("#session-time-elapsed").text(formatTime(sessionElapsed));
+
       seconds--;
       sessionPlayCard
         .removeClass("rest_styling play_styling")
@@ -863,6 +873,7 @@ async function newCountDownSeconds(
 }
 
 async function startWorkoutSession(session) {
+  sessionElapsed = 0;
   let timeBasedExercisesTimer = $("#timeBasedExercisesSeconds");
   let setTimeSeconds = session.secondsActive;
   let numOfExercises = session.totalExercisesCount;
@@ -870,6 +881,7 @@ async function startWorkoutSession(session) {
   let sessionExercises = session.exercises;
   let setTitleElement = $("#workout_playcard_title");
   let setSubtitleElement = $("#workout_playcard_subtitle");
+  $("#session-total-duration").text(formatTime(session.totalDurationInSecs));
   arrayExercises = [];
 
   // Rest object

@@ -122,19 +122,22 @@ const MOVEMENTS = [
     id: "3e5a2c8f",
     name: "Hollowback",
     category: "Freeze",
-    description: "Handstand with back arched and legs extending backward.",
+    description:
+      "A freeze supported by both hands where the elbows are bent and flare out to the sides while aggressively craning the neck up to look at the ceiling, dropping the legs over and backward toward the floor behind them.",
   },
   {
     id: "3r8a2c9q",
     name: "Head Hollowback",
     category: "Freeze",
-    description: "Headstand with back arched and legs extending backward.",
+    description:
+      "A freeze supported by both hands and the head where the elbows are bent and flare out to the sides while aggressively craning the neck up to look at the ceiling, dropping the legs over and backward toward the floor behind them.",
   },
   {
     id: "1d8b6f4e",
     name: "Invert Freeze",
     category: "Freeze",
-    description: "Also pike. Hollowback with legs piked.",
+    description:
+      "A freeze supported by both hands where the elbows are bent and flare out to the sides while aggressively craning the neck up to look at the ceiling, pulling the legs towards the chest in a piked position.",
   },
   {
     id: "2f7c4a1e",
@@ -180,7 +183,7 @@ const MOVEMENTS = [
   },
   {
     id: "1e5a2f8c",
-    name: "Head Freeze",
+    name: "Headstand Freeze",
     category: "Freeze",
     description:
       "A foundational static pose where you balance your body weight using a stable three-point triangle base formed by your head and both hands.",
@@ -198,6 +201,27 @@ const MOVEMENTS = [
     category: "Freeze",
     description:
       "Also known as Airbaby Freeze. A one-arm-supported freeze where the knee rests on the elbow of the same side while the body is held off the ground.",
+  },
+  {
+    id: "7d2a9c4e",
+    name: "Pike Freeze",
+    category: "Freeze",
+    description:
+      "Also known as Pike. An advanced freeze where the breaker balances their entire body on a single straight arm while holding both legs straight out, compressed tightly toward the chest in a pike position.",
+  },
+  {
+    id: "4f8b1e6c",
+    name: "Pretzel",
+    category: "Footwork",
+    description:
+      "A footwork pattern where each leg performs a sweep. The name is derived from the two circles the sweeps trace on the floor, resembling a pretzel shape",
+  },
+  {
+    id: "9c3e7a1d",
+    name: "Bridge",
+    category: "Freeze",
+    description:
+      "A position supported by the arms and legs with the chest facing upwards.",
   },
 ];
 

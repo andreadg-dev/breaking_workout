@@ -230,10 +230,68 @@ const MOVEMENTS_SORTED = [...MOVEMENTS].sort((a, b) => {
   return catCompare !== 0 ? catCompare : a.name.localeCompare(b.name);
 });
 
+const EXERCISES = [
+  {
+    id: "a91f2d43",
+    name: "Shoulder Stretching",
+    category: "Stretching",
+    description:
+      "A mobility drill focused on opening the shoulders and improving overhead range of motion.",
+  },
+  {
+    id: "b27e6c1a",
+    name: "Straddle Split",
+    category: "Stretching",
+    description:
+      "A hamstring and adductor stretch that opens the hips and improves flexibility for splits training.",
+  },
+  {
+    id: "c83d4f19",
+    name: "Bridge to Hollowback",
+    category: "Conditioning",
+    description:
+      "A flowing mobility sequence moving from a chest-up bridge into a hollowback position to open the spine and shoulders.",
+  },
+  {
+    id: "d46a9b72",
+    name: "Bridge to Handstand",
+    category: "Conditioning",
+    description:
+      "A strength and mobility progression linking bridge work to a handstand effort, building shoulder control and body tension.",
+  },
+  {
+    id: "e12c5b86",
+    name: "Pike Freeze at the Wall",
+    category: "Conditioning",
+    description:
+      "A wall-assisted stretch and balance hold that targets hamstrings, calves, and hip flexors while improving alignment.",
+  },
+  {
+    id: "f58d1e3c",
+    name: "Frog Freeze to Handstand",
+    category: "Conditioning",
+    description:
+      "A demanding mobility-to-strength transition from a frog stretch position into a handstand preparation and lift.",
+  },
+  {
+    id: "g74b1a9d",
+    name: "Babyfreeze to Handstand",
+    category: "Conditioning",
+    description:
+      "A dynamic pathway from a baby freeze into a handstand transition, training balance, shoulder stability, and body control.",
+  },
+];
+
 // Create an Array with 5 storage key names
 const STORAGE_KEYS = Array.from(
   { length: 5 },
   (_, index) => `breakinghiit_1rm_v${index}`,
+);
+
+// Create an Array with 5 storage key names
+const STORAGE_KEYS_PROGRAMME = Array.from(
+  { length: 5 },
+  (_, index) => `breakingprog_1rm_v${index}`,
 );
 
 const SESSION_SAMPLE = {

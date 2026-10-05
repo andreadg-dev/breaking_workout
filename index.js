@@ -1,4 +1,6 @@
 //================================
+// TIME-BASED SESSION FUNCTIONS
+//================================
 // GLOBAL
 //================================
 function newSessionObject() {
@@ -785,7 +787,7 @@ async function manageWakeLock(action) {
 
 // Function to play the breakbeat or to pause it in a fade out
 // The breakbeat object has to be declare outside the function not to play several tracks at the same time
-const breakbeatAudio = new Audio("./audio/funky_deegeeace.mp3");
+const breakbeatAudio = new Audio(breakbeatPath);
 function breakbeat(action) {
   if (action === "play") {
     breakbeatAudio.volume = Number($("#volume_slider").val() ?? 1);
@@ -1024,12 +1026,21 @@ function toggleSavedSessionInfo() {
   });
 }
 
-function SavedSessionsScreen() {
+function SavedSessionsScreen(mode) {
   stopBreakbeat();
 
   $("#root").empty();
 
-  let savedSessions = STORAGE_KEYS.map((storageKey, index) => {
+  let keys;
+  if (mode === "programme") {
+    keys = STORAGE_KEYS_PROGRAMME;
+  } else if (mode === "session") {
+    keys = STORAGE_KEYS;
+  } else {
+    return;
+  }
+
+  let savedSessions = keys.map((storageKey, index) => {
     let currentState = localStorage.getItem(storageKey);
 
     if (currentState && currentState.trim() != "") {
@@ -1046,6 +1057,7 @@ function SavedSessionsScreen() {
         storageKey,
         parsedStorageValue,
         currentState,
+        mode,
       );
     }
   });
@@ -1065,14 +1077,14 @@ function SavedSessionsScreen() {
 }
 
 // Remove move label when clicking on the bin button
-function removeSavedSession(element, storageKey) {
+function removeSavedSession(element, storageKey, move) {
   $(element).closest(".saved_session").remove();
 
   // Remove the data saved in local storage
   localStorage.removeItem(storageKey);
 
   // Call saved sessions screen so to show the remaining saved session or the warning message
-  SavedSessionsScreen();
+  SavedSessionsScreen(mode);
 }
 
 //================================
@@ -1086,3 +1098,12 @@ function setCopyright() {
 }
 
 //pushing again once again
+
+//=====================================
+// PROGRAMME FUNCTIONS
+//=====================================
+
+function ImportProgrammeScreen() {
+  $("#root").empty();
+  $("#root").append("<h1 class='work-in-progress'>⚠️ WORK IN PROGRESS!!</h1>");
+}

@@ -346,11 +346,11 @@ const WORKOUT_PLAYCARD = `<div>
 </div>`;
 
 const REST_IMG = `<img
-        src="./images/rest.png"
+        src="${movePlaceholderImg}"
         alt="Image of a bboy resting" />`;
 
 const MOVE_IMG_PLACEHOLDER = `<img
-        src="./images/move.png"
+        src="${restPlaceholderImg}"
         alt="Image of a bboy doing footworks" />`;
 
 //================================
@@ -392,10 +392,11 @@ const SAVED_SESSION_COMPONENT = (
   storageKey,
   parsedStorageValue,
   currentState,
+  mode,
 ) => {
   return `<div class="saved_session">
         <div class="saved_session_header">
-          <span class="saved_session_bin pointer" onClick="removeSavedSession(this, '${storageKey}')">${BIN_ICON}</span>
+          <span class="saved_session_bin pointer" onClick="removeSavedSession(this, '${storageKey}','${mode}')">${BIN_ICON}</span>
           <span class="saved_session_index">${index}.</span>
           <div class="saved_session_header_right">
             <span>${sessionName} (${storageKey})</span>

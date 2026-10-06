@@ -270,127 +270,6 @@ function newSessionStateNamePopup(storageKey, action) {
   newOverlayScreen("SESSION NAME", SESSION_NAME_POPUP(storageKey, action));
 }
 
-function newProgrammeStatePopup(action) {
-  if (!["save", "load"].includes(action.toLowerCase())) {
-    newErrorPopup("You can only choose Save or Load!");
-    return;
-  }
-
-  const states = STORAGE_KEYS_PROGRAMME.map((storageKey, index) => {
-    const currentState = localStorage.getItem(storageKey);
-
-    if (currentState && currentState.trim() !== "") {
-      try {
-        const parsedState = JSON.parse(window.atob(currentState));
-        const stateName = parsedState.stateName || "Unnamed Programme";
-
-        return `
-          <div class="popup_storage_line flex">
-            <div class="popup_storage_line_left flex-column">
-              <div class="popup_storage_line_left_namestatus">
-                <span class="popup_storage_line_left_index">${index}.</span>
-                <span>${stateName}</span>
-                <span class="storage_status storage_status_used">used</span>
-              </div>
-              <span class="storage_key">${storageKey}</span>
-            </div>
-            ${
-              action.toLowerCase() === "save"
-                ? `<div class="popup_btn popup_overwrite_btn pointer" onClick="newProgrammeStateNamePopup('${storageKey}','OVERWRITE')">OVERWRITE</div>`
-                : `<div class="popup_btn popup_load_btn pointer" onClick="loadProgrammeStateFromStorage('${storageKey}')">LOAD</div>`
-            }
-          </div>
-        `;
-      } catch (error) {
-        return;
-      }
-    }
-
-    return `
-      <div class="popup_storage_line flex">
-        <div class="popup_storage_line_left flex-column">
-          <div class="popup_storage_line_left_namestatus">
-            <span class="popup_storage_line_left_index">${index}.</span>
-            <span>Undefined</span>
-            <span class="storage_status storage_status_empty">empty</span>
-          </div>
-          <span class="storage_key">${storageKey}</span>
-        </div>
-        ${
-          action.toLowerCase() === "save"
-            ? `<div class="popup_btn popup_save_btn pointer" onClick="newProgrammeStateNamePopup('${storageKey}','SAVE')">SAVE</div>`
-            : ""
-        }
-      </div>
-    `;
-  });
-
-  const validStates = states.filter(Boolean);
-
-  if (action.toLowerCase() === "load" && validStates.length < 1) {
-    newOverlayScreen(
-      "LOAD",
-      `<div class="no-loading-data">⚠️ NO PROGRAMME DATA TO BE LOADED!</div>`,
-    );
-    return;
-  }
-
-  newOverlayScreen(action.toUpperCase(), `<div>${states.join("")}</div>`);
-}
-
-function newProgrammeStateNamePopup(storageKey, action) {
-  if (
-    Number($("#programme_total_count").html()) <
-    THRESHOLDS.minExercisesInWorkout
-  ) {
-    newErrorPopup(
-      `You cannot save a programme with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
-    );
-    return;
-  }
-
-  newOverlayScreen(
-    "PROGRAMME NAME",
-    `
-      <div class="flex-column session_name_card_content">
-        ${
-          action === "OVERWRITE"
-            ? `<div id="overwrite_warning">This action will overwrite what you currently have saved in the selected storage key.</div>`
-            : ""
-        }
-        <label for="session_name">Choose a title for your programme:</label>
-        <input
-          type="text"
-          maxlength="${THRESHOLDS.maxSessionNameChars}"
-          minlength="${THRESHOLDS.minSessionNameChars}"
-          name="session_name"
-          id="session_name_input"
-          placeholder="Unintitled"
-          required
-        >
-        <button class="btn btn-primary" onClick="saveProgrammeStateFromNamePopup()">CONFIRM</button>
-        <div>This programme will be saved locally on <span id="sessionnamepopup_storagekey" class="storage_key">${storageKey}</span> in your browser.</div>
-      </div>
-    `,
-  );
-}
-
-function saveProgrammeStateFromNamePopup() {
-  const storageKey = $("#sessionnamepopup_storagekey").html().trim();
-  const stateName = $("#session_name_input").val().trim();
-
-  try {
-    saveCurrentProgrammeState(storageKey, stateName);
-    newSuccessPopup(
-      `Programme saved successfully on '${storageKey}' with the following name: '${stateName}'.`,
-    );
-  } catch (error) {
-    newErrorPopup(
-      `An unexpected error occurred when saving '${stateName}' on ${storageKey}:<br/><br/>${error}.`,
-    );
-  }
-}
-
 function copyToClipboard(element) {
   const contentToCopy = $(element).text().trim();
 
@@ -1239,6 +1118,230 @@ function setCopyright() {
 // PROGRAMME FUNCTIONS
 //=====================================
 
+function newProgrammeStatePopup(action) {
+  if (
+    action === "save" &&
+    Number($("#programme_total_count").html()) <
+      THRESHOLDS.minExercisesInWorkout
+  ) {
+    newErrorPopup(
+      `You cannot save a workout programme with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
+    );
+    return;
+  }
+
+  if (!["save", "load"].includes(action.toLowerCase())) {
+    newErrorPopup("You can only choose Save or Load!");
+    return;
+  }
+
+  const states = STORAGE_KEYS_PROGRAMME.map((storageKey, index) => {
+    const currentState = localStorage.getItem(storageKey);
+
+    if (currentState && currentState.trim() !== "") {
+      try {
+        const parsedState = JSON.parse(window.atob(currentState));
+        const stateName = parsedState.stateName || "Unnamed Programme";
+
+        return `
+              <div class="popup_storage_line flex">
+                <div class="popup_storage_line_left flex-column">
+                  <div class="popup_storage_line_left_namestatus">
+                    <span class="popup_storage_line_left_index">${index}.</span>
+                    <span>${stateName}</span>
+                    <span class="storage_status storage_status_used">used</span>
+                  </div>
+                  <span class="storage_key">${storageKey}</span>
+                </div>
+                ${
+                  action.toLowerCase() === "save"
+                    ? `<div class="popup_btn popup_overwrite_btn pointer" onClick="newProgrammeStateNamePopup('${storageKey}','OVERWRITE')">OVERWRITE</div>`
+                    : `<div class="popup_btn popup_load_btn pointer" onClick="loadProgrammeStateFromStorage('${storageKey}')">LOAD</div>`
+                }
+              </div>
+            `;
+      } catch (error) {
+        return;
+      }
+    }
+
+    return `
+          <div class="popup_storage_line flex">
+            <div class="popup_storage_line_left flex-column">
+              <div class="popup_storage_line_left_namestatus">
+                <span class="popup_storage_line_left_index">${index}.</span>
+                <span>Undefined</span>
+                <span class="storage_status storage_status_empty">empty</span>
+              </div>
+              <span class="storage_key">${storageKey}</span>
+            </div>
+            ${
+              action.toLowerCase() === "save"
+                ? `<div class="popup_btn popup_save_btn pointer" onClick="newProgrammeStateNamePopup('${storageKey}','SAVE')">SAVE</div>`
+                : ""
+            }
+          </div>
+        `;
+  });
+
+  const hasAnySaved = STORAGE_KEYS_PROGRAMME.some((key) =>
+    localStorage.getItem(key)?.trim(),
+  );
+
+  if (action.toLowerCase() === "load" && !hasAnySaved) {
+    newOverlayScreen(
+      "LOAD",
+      `<div class="no-loading-data">⚠️ NO PROGRAMME DATA TO BE LOADED!</div>`,
+    );
+    return;
+  }
+
+  newOverlayScreen(action.toUpperCase(), `<div>${states.join("")}</div>`);
+}
+
+function saveProgrammeStateFromNamePopup() {
+  const storageKey = $("#sessionnamepopup_storagekey").html().trim();
+  const stateName = $("#session_name_input").val().trim();
+
+  try {
+    const wasSaved = saveCurrentProgrammeState(storageKey, stateName);
+
+    if (!wasSaved) {
+      return;
+    }
+
+    newSuccessPopup(
+      `Programme saved successfully on '${storageKey}' with the following name: '${stateName}'.`,
+    );
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred when saving '${stateName}' on ${storageKey}:<br/><br/>${error}.`,
+    );
+  }
+}
+
+function saveCurrentProgrammeState(storageKey, stateName) {
+  if (
+    !STORAGE_KEYS_PROGRAMME.includes(storageKey) ||
+    !(
+      stateName.trim().length >= THRESHOLDS.minSessionNameChars &&
+      stateName.trim().length <= THRESHOLDS.maxSessionNameChars
+    )
+  ) {
+    newErrorPopup(`Either the storage key selected is incorrect or the session name you chose does not
+          comply with the session name requirements (it can only be between 5 and 20 characters long):<br/><br/>
+            • Session name selected: '${stateName}'<br/>
+            • Storage key selected: '${storageKey}'`);
+    return false;
+  }
+
+  try {
+    const programmeSessionToSave = newProgrammeSessionObject();
+
+    if (
+      !programmeSessionToSave ||
+      !programmeSessionToSave.workout ||
+      !programmeSessionToSave.workout.exercises ||
+      programmeSessionToSave.workout.exercises.length < 1
+    ) {
+      newErrorPopup(
+        "You need at least one selected exercise to save a programme.",
+      );
+      return false;
+    }
+
+    programmeSessionToSave.stateName = stateName;
+    programmeSessionToSave.storageKey = storageKey;
+
+    localStorage.setItem(
+      storageKey,
+      window.btoa(JSON.stringify(programmeSessionToSave)),
+    );
+
+    return true;
+  } catch (error) {
+    newErrorPopup(
+      `An unexpected error occurred while trying to save session to storage key ${storageKey}:<br/><br/>${error}`,
+    );
+    return false;
+  }
+}
+
+function ImportProgrammeScreen() {
+  stopBreakbeat();
+
+  $("#root").empty();
+  $("#root").append(PROGRAMME_LANDING_PAGE());
+
+  $(document)
+    .off("click", "#programme_import_btn")
+    .on("click", "#programme_import_btn", function () {
+      const raw = $("#programme_base64_input").val().trim();
+
+      if (!raw) {
+        newErrorPopup("Please paste a valid programme string first.");
+        return;
+      }
+
+      const parsed = parseProvidedProgramme(raw);
+
+      if (parsed) {
+        ProgrammeSelectionScreen(raw);
+      }
+    });
+
+  $(document)
+    .off("click", "#programme_new_btn")
+    .on("click", "#programme_new_btn", function () {
+      ProgrammeSelectionScreen();
+    });
+
+  $(document)
+    .off("click", ".programme_load_state_btn")
+    .on("click", ".programme_load_state_btn", function () {
+      newProgrammeStatePopup("load");
+    });
+
+  $("#navbar_menu").prop("open", false);
+}
+
+function newProgrammeStateNamePopup(storageKey, action) {
+  if (
+    Number($("#programme_total_count").html()) <
+    THRESHOLDS.minExercisesInWorkout
+  ) {
+    newErrorPopup(
+      `You cannot save a programme with less than ${THRESHOLDS.minExercisesInWorkout} exercise.`,
+    );
+    return;
+  }
+
+  newOverlayScreen(
+    "PROGRAMME NAME",
+    `
+      <div class="flex-column session_name_card_content">
+        ${
+          action === "OVERWRITE"
+            ? `<div id="overwrite_warning">This action will overwrite what you currently have saved in the selected storage key.</div>`
+            : ""
+        }
+        <label for="session_name">Choose a title for your programme:</label>
+        <input
+          type="text"
+          maxlength="${THRESHOLDS.maxSessionNameChars}"
+          minlength="${THRESHOLDS.minSessionNameChars}"
+          name="session_name"
+          id="session_name_input"
+          placeholder="Unintitled"
+          required
+        >
+        <button class="btn btn-primary" onClick="saveProgrammeStateFromNamePopup()">CONFIRM</button>
+        <div>This programme will be saved locally on <span id="sessionnamepopup_storagekey" class="storage_key">${storageKey}</span> in your browser.</div>
+      </div>
+    `,
+  );
+}
+
 function parseProvidedProgramme(programmeBase64String) {
   try {
     if (!programmeBase64String || !programmeBase64String.trim()) {
@@ -1282,39 +1385,6 @@ function loadProgrammeStateFromStorage(storageKey) {
       `An unexpected error occurred while retrieving the programme saved on local storage ${storageKey}:<br/><br/>${error}`,
     );
   }
-}
-
-function ImportProgrammeScreen() {
-  stopBreakbeat();
-
-  $("#root").empty();
-  $("#root").append(PROGRAMME_LANDING_PAGE());
-
-  $(document).on("click", "#programme_import_btn", function () {
-    const raw = $("#programme_base64_input").val().trim();
-
-    if (!raw) {
-      newErrorPopup("Please paste a valid programme string first.");
-      return;
-    }
-
-    const parsed = parseProvidedProgramme(raw);
-
-    if (parsed) {
-      ProgrammeSelectionScreen(raw);
-    }
-  });
-
-  $(document).on("click", "#programme_new_btn", function () {
-    ProgrammeSelectionScreen();
-  });
-
-  $(document).on("click", "#programme_saved_btn", function () {
-    SavedSessionsScreen("programme");
-  });
-
-  // Closes the navbar menu
-  $("#navbar_menu").prop("open", false);
 }
 
 function newProgrammeSessionObject() {
@@ -1381,38 +1451,6 @@ function newProgrammeSessionObject() {
   }
 }
 
-function saveCurrentProgrammeState(storageKey, stateName) {
-  if (
-    !STORAGE_KEYS_PROGRAMME.includes(storageKey) ||
-    !(
-      stateName.trim().length >= THRESHOLDS.minSessionNameChars &&
-      stateName.trim().length <= THRESHOLDS.maxSessionNameChars
-    )
-  ) {
-    newErrorPopup(`Either the storage key selected is incorrect or the session name you chose does not
-      comply with the session name requirements (it can only be between 5 and 20 characters long):<br/><br/>
-        • Session name selected: '${stateName}'<br/>
-        • Storage key selected: '${storageKey}'`);
-
-    return;
-  }
-
-  try {
-    const sessionToSave = newProgrammeSessionObject();
-    sessionToSave.stateName = stateName;
-    sessionToSave.storageKey = storageKey;
-
-    localStorage.setItem(
-      storageKey,
-      window.btoa(JSON.stringify(sessionToSave)),
-    );
-  } catch (error) {
-    newErrorPopup(
-      `An unexpected error occurred while trying to save the programme to ${storageKey}:<br/><br/>${error}`,
-    );
-  }
-}
-
 function ProgrammeSelectionScreen(sessionBase64String) {
   stopBreakbeat();
 
@@ -1452,7 +1490,7 @@ function ProgrammeSelectionScreen(sessionBase64String) {
       $("#programme_moves_selection").append(
         PROGRAMME_MOVE_LABEL(generateProgrammeDropdown(), 1, "", null),
       );
-      $("#programme_total_count").html(1);
+      $("#programme_total_count").html(0);
     }
 
     Sortable.create(document.getElementById("programme_moves_selection"), {
@@ -1525,18 +1563,6 @@ function ProgrammeSelectionScreen(sessionBase64String) {
       countEl.html(current - 1);
       updateProgrammeTotals();
     });
-
-    $(document).on("click", "#programme_save_state_btn", function () {
-      newProgrammeStatePopup("save");
-    });
-
-    $(document).on("click", "#programme_load_state_btn", function () {
-      newProgrammeStatePopup("load");
-    });
-
-    $(document).on("click", ".start_programme_session", function () {
-      StartProgrammeWorkout();
-    });
   } catch (error) {
     newErrorPopup(
       `An unexpected error occurred while generating the Programme page:<br/><br/>${error}`,
@@ -1562,6 +1588,12 @@ function updateProgrammeTotals() {
   let total = 0;
 
   $(".programme_move_label").each(function () {
+    const selectedExercise = $(this).find(".programme_move_dropdown").val();
+
+    if (!selectedExercise || selectedExercise.trim() === "") {
+      return;
+    }
+
     const countValue =
       Number($(this).find(".programme_move_count").html()) || 0;
     total += countValue;

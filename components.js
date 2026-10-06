@@ -216,6 +216,23 @@ const SESSION_NAME_POPUP = (storageKey, action) => {
     </div>`;
 };
 
+const PROGRAMME_SESSION_NAME_POPUP = (storageKey, action) => {
+  return `<div class="flex-column session_name_card_content">
+      ${action === "OVERWRITE" ? `<div id="overwrite_warning">This action will overwrite what you currently have saved in the selected storage key.</div>` : ""}
+      <label for="session_name">Choose a title for your session:</label>
+      <input 
+        type="text" 
+        maxlength="${THRESHOLDS.maxSessionNameChars}" 
+        minlength="${THRESHOLDS.minSessionNameChars}" 
+        name="session_name" 
+        id="session_name_input" 
+        placeholder="Unintitled"
+        required>
+      <button class="btn btn-primary" onClick="saveProgrammeStateFromNamePopup()">CONFIRM</button>
+      <div>This workout session will be saved locally on <span id="sessionnamepopup_storagekey" class="storage_key">${storageKey}</span> in your browser.</div>
+    </div>`;
+};
+
 //================================
 // IMPORT WORKOUT SCREEN
 //================================
@@ -445,13 +462,13 @@ function PROGRAMME_LANDING_PAGE() {
         </div>
 
         <div class="programme_import_box">
-          <button id="programme_new_btn" class="btn btn-success">
+          <button id="programme_new_btn" class="btn btn-success" onclick="ProgrammeSelectionScreen()">
             Create New Programme
           </button>
         </div>
 
         <div class="programme_import_box">
-          <button id="programme_saved_btn" class="btn btn-secondary">
+          <button class="programme_load_state_btn btn btn-secondary" onclick="newProgrammeStatePopup('load')">
             Load Saved Programme
           </button>
         </div>
@@ -474,8 +491,8 @@ function PROGRAMME_WORKOUT_CONFIG() {
         <strong id="programme_total_count">0</strong>
       </div>
       <div class="programme_state_buttons">
-        <button id="programme_save_state_btn" class="btn btn-primary btn-sm" type="button">Save</button>
-        <button id="programme_load_state_btn" class="btn btn-secondary btn-sm" type="button">Load</button>
+        <button id="programme_save_state_btn" class="btn btn-primary btn-sm" type="button" onclick="newProgrammeStatePopup('save')">Save</button>
+        <button class="programme_load_state_btn btn btn-secondary btn-sm" type="button" onclick="newProgrammeStatePopup('load')">Load</button>
       </div>
     </div>
   `;
@@ -485,7 +502,7 @@ function PROGRAMME_FORM_BUTTONS() {
   return `
     <div class="form_buttons">
       <button class="btn btn-primary add_programme_move" type="button">Add Exercise</button>
-      <button class="btn btn-success start_programme_session" type="button">Start Programme</button>
+      <button class="btn btn-success start_programme_session" type="button" onclick="StartProgrammeWorkout()">Start Programme</button>
     </div>
   `;
 }

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UnchainedFitness</title>
+    <link
+      rel="shortcut icon"
+      href="../images/favicon.ico"
+      type="image/x-icon"
+    />
+    
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"
+      id="my_navbar"
+    >
+      <div id="navbarBrand" class="cursor">
+        <a class="navbar-brand" onclick="goBackHome()"
+          ><img
+            src="../images/favicon.png"
+            alt="brand-image"
+            style="height: 40px"
+        /></a>
+      </div>
+      <details id="navbar_menu">
+        <summary></summary>
+        <div id="navbar_menu_items">
+          <div onclick="goBackHome()">Home</div>
+      </details>
+    </nav>
+    <header>
+      <h1>Strength training with weights</h1>
+      <div class="sub">
+        Enter your <b>actual 1RM</b> for each main lift. The page calculates
+        your <b>Training Max (TM = 85% of 1RM)</b> and then all percentages from
+        TM. Values persist via <span class="mono">localStorage</span> (until you
+        clear browser data).
+      </div>
+    </header>
+
+    <div class="wrap">
+      <div class="grid">
+        <section class="card">
+          <h2>Inputs</h2>
+          <div class="content">
+            <div class="row">
+              <div>
+                <label for="inSquat">Squat 1RM (kg)</label>
+                <input
+                  id="inSquat"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  inputmode="decimal"
+                />
+              </div>
+              <div>
+                <label for="inBench">Bench Press 1RM (kg)</label>
+                <input
+                  id="inBench"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  inputmode="decimal"
+                />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px">
+              <div>
+                <label for="inDeadlift">Deadlift 1RM (kg)</label>
+                <input
+                  id="inDeadlift"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  inputmode="decimal"
+                />
+              </div>
+              <div>
+                <label for="inPress">Overhead Press 1RM (kg)</label>
+                <input
+                  id="inPress"
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  inputmode="decimal"
+                />
+              </div>
+            </div>
+
+            <div class="row_radio" style="margin-top: 10px">
+              <div>
+                <fieldset>
+                  <legend>Current Week</legend>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inWeek1"
+                      name="week_radio"
+                      value="1"
+                      checked
+                    />
+                    <label for="inWeek1">Week 1</label>
+                  </div>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inWeek2"
+                      name="week_radio"
+                      value="2"
+                    />
+                    <label for="inWeek2">Week 2</label>
+                  </div>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inWeek3"
+                      name="week_radio"
+                      value="3"
+                    />
+                    <label for="inWeek3">Week 3</label>
+                  </div>
+                </fieldset>
+              </div>
+              <div></div>
+            </div>
+
+            <div class="row_radio" style="margin-top: 10px">
+              <div>
+                <fieldset>
+                  <legend>Current Day</legend>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inDayA"
+                      name="day_radio"
+                      value="A"
+                      checked
+                    />
+                    <label for="inDayA">Day A</label>
+                  </div>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inDayB"
+                      name="day_radio"
+                      value="B"
+                    />
+                    <label for="inDayB">Day B</label>
+                  </div>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inDayD"
+                      name="day_radio"
+                      value="D"
+                    />
+                    <label for="inDayD">Day D</label>
+                  </div>
+
+                  <div>
+                    <input
+                      type="radio"
+                      id="inDayE"
+                      name="day_radio"
+                      value="E"
+                    />
+                    <label for="inDayE">Day E</label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="row">
+              <div class="pill">Squat TM (85%): <b id="tmSquat">—</b></div>
+              <div class="pill">Bench TM (85%): <b id="tmBench">—</b></div>
+              <div class="pill">
+                Deadlift TM (85%): <b id="tmDeadlift">—</b>
+              </div>
+              <div class="pill">Press TM (85%): <b id="tmPress">—</b></div>
+            </div>
+
+            <div class="help">
+              Notes:
+              <ul style="margin: 8px 0 0 18px; padding: 0">
+                <li>
+                  All work sets are calculated from <b>TM</b> (not true max).
+                </li>
+                <li>
+                  Weights are rounded to the nearest <b>0.5kg</b> by default.
+                </li>
+                <li>
+                  Persistence: stored in <b>localStorage</b>; it survives
+                  refresh/app restarts and only clears when you clear site data.
+                </li>
+              </ul>
+            </div>
+
+            <div class="btnrow">
+              <button id="btnResetDefaults" type="button">
+                Reset to defaults
+              </button>
+              <button id="btnClearStorage" type="button">
+                Clear saved values
+              </button>
+              <button id="btnExtractState" type="button">
+                Get Current State
+              </button>
+            </div>
+
+            <div>
+              <label id="currentStateStringLbl" for="currentStateStringInput"
+                >State string</label
+              >
+              <div id="loadStateInput">
+                <input id="currentStateStringInput" type="text" />
+                <button id="btnLoadState" type="button">Load State</button>
+              </div>
+            </div>
+
+            <div class="warnbox" id="mobileNote" style="display: none">
+              Mobile tip: most “auto refresh” behavior is controlled by the
+              browser/OS; JavaScript can't fully disable it. This page uses
+              <b>localStorage</b> so your numbers are restored even if the
+              browser reloads the page.
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Program (Weeks 1-3)</h2>
+          <div class="content" id="program"></div>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="workout.js"></script>
+    <script src="index.js"></script>
+    <script src="../data.js"></script>
+    <script src="../paths.js"></script>
+    <script src="../components.js"></script>
+    <script src="../index.js"></script>
+  </body>
+</html>

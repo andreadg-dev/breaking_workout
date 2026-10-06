@@ -1032,7 +1032,6 @@ div.noselection:hover {
 .programme_settings {
   position: sticky;
   top: 88px;
-  z-index: 4;
   background: rgba(15, 23, 42, 0.92);
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 22px;
@@ -1228,7 +1227,6 @@ div.noselection:hover {
 
 .programme_training_wrapper {
   max-width: 1200px;
-  margin: 20px auto 0;
   padding: 0 20px 30px;
 }
 

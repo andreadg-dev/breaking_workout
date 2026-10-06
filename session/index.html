@@ -22,7 +22,7 @@
       href="../images/favicon.ico"
       type="image/x-icon"
     />
-    <title>BreakingCardio</title>
+    <title>UnchainedFitness</title>
   </head>
   <body>
     <nav
@@ -30,22 +30,22 @@
       id="my_navbar"
     >
       <div id="navbarBrand" class="cursor">
-        <div>
-          <span>
-            <a class="navbar-brand" href="../index.html"
-              ><img
-                src="../images/favicon.png"
-                alt="brand-image"
-                style="height: 40px" /></a></span
-          ><span class="site-section" onclick="ImportWorkoutScreen()"
-            ><a href="#">Session</a></span
-          >
-        </div>
+        <a class="navbar-brand" onclick="goBackHome()"
+          ><img
+            src="../images/favicon.png"
+            alt="brand-image"
+            style="height: 40px"
+        /></a>
       </div>
       <details id="navbar_menu">
         <summary></summary>
         <div id="navbar_menu_items">
-          <div onclick="MoveOverviewScreen()">Moves Overview</div>
+          <div onclick="goBackHome()">Home</div>
+          <div onclick="ImportWorkoutScreen()">Session Home</div>
+          <div onclick="MoveOverviewScreen('moves')">Moves Overview</div>
+          <div onclick="MoveOverviewScreen('exercises')">
+            Exercises Overview
+          </div>
           <div onclick="SavedSessionsScreen('session')">Saved Sessions</div>
         </div>
       </details>

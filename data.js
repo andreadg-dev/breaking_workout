@@ -282,6 +282,11 @@ const EXERCISES = [
   },
 ];
 
+const EXERCISES_SORTED = [...EXERCISES].sort((a, b) => {
+  const catCompare = a.category.localeCompare(b.category);
+  return catCompare !== 0 ? catCompare : a.name.localeCompare(b.name);
+});
+
 // Create an Array with 5 storage key names
 const STORAGE_KEYS = Array.from(
   { length: 5 },
@@ -293,6 +298,8 @@ const STORAGE_KEYS_PROGRAMME = Array.from(
   { length: 5 },
   (_, index) => `breakingprog_1rm_v${index}`,
 );
+
+const PROGRAMME_REQUIRED_KEYS = ["stateName", "storageKey", "workout"];
 
 const SESSION_SAMPLE = {
   stateName: "test session name",

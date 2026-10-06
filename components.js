@@ -220,7 +220,8 @@ const SESSION_NAME_POPUP = (storageKey, action) => {
 // IMPORT WORKOUT SCREEN
 //================================
 
-const IMPORT_SCREEN_COMPONENT = `<div id="import_screen_wrapper" class="flex-column">
+function WORKOUT_SESSION_LANDING_PAGE() {
+  return `<div id="import_screen_wrapper" class="flex-column">
     <div class="import_screen_top flex-column">
         <label id="workout_string_lbl" for="workout_string">WORKOUT STRING</label>
         <textarea 
@@ -236,6 +237,7 @@ const IMPORT_SCREEN_COMPONENT = `<div id="import_screen_wrapper" class="flex-col
         <div class="my_btn pointer" id="load_workout_btn" onClick="newSessionStatePopup('load')">${BULLSEYE_ICON} LOAD WORKOUT</div>
     </div>
 </div>`;
+}
 
 //================================
 // MOVE SELECTION SCREEN
@@ -419,3 +421,142 @@ const SAVED_SESSION_COMPONENT = (
 };
 
 // pushing again
+
+//=========================================
+// PROGRAMME BASED COMPONENTS
+//=========================================
+
+function PROGRAMME_LANDING_PAGE() {
+  return `
+    <div class="programme_import_screen">
+      <div class="programme_import_panel">
+        <h1>Programme</h1>
+
+        <div class="programme_import_box">
+          <label for="programme_base64_input">Import programme</label>
+          <textarea
+            id="programme_base64_input"
+            rows="5"
+            placeholder="Paste a base64-encoded programme JSON here..."
+          ></textarea>
+          <button id="programme_import_btn" class="btn btn-primary">
+            Import
+          </button>
+        </div>
+
+        <div class="programme_import_box">
+          <button id="programme_new_btn" class="btn btn-success">
+            Create New Programme
+          </button>
+        </div>
+
+        <div class="programme_import_box">
+          <button id="programme_saved_btn" class="btn btn-secondary">
+            Load Saved Programme
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function PROGRAMME_WORKOUT_CONFIG() {
+  return `
+    <div id="programme_workout_settings" class="programme_settings">
+      <div class="programme_title_wrapper">
+        <h2>Programme Builder</h2>
+      </div>
+      <div class="programme_info">
+        <span>Build a checklist workout, drag to reorder, and save it like a normal session.</span>
+      </div>
+      <div class="programme_total_count_box">
+        <span>Exercises:</span>
+        <strong id="programme_total_count">0</strong>
+      </div>
+      <div class="programme_state_buttons">
+        <button id="programme_save_state_btn" class="btn btn-primary btn-sm" type="button">Save</button>
+        <button id="programme_load_state_btn" class="btn btn-secondary btn-sm" type="button">Load</button>
+      </div>
+    </div>
+  `;
+}
+
+function PROGRAMME_FORM_BUTTONS() {
+  return `
+    <div class="form_buttons">
+      <button class="btn btn-primary add_programme_move" type="button">Add Exercise</button>
+      <button class="btn btn-success start_programme_session" type="button">Start Programme</button>
+    </div>
+  `;
+}
+
+function generateProgrammeDropdown(selectedValueId) {
+  const grouped = EXERCISES_SORTED.reduce((acc, exercise) => {
+    (acc[exercise.category] = acc[exercise.category] || []).push(exercise);
+    return acc;
+  }, {});
+
+  const optgroups = Object.entries(grouped).map(([category, exercises]) => {
+    const options = exercises
+      .map((exercise) => {
+        const value = exercise.name
+          .toLowerCase()
+          .replaceAll(" ", "_")
+          .replaceAll("/", "");
+        return `<option value="${exercise.id}-${value}" ${selectedValueId && selectedValueId === exercise.id ? "selected" : ""}>${exercise.name}</option>`;
+      })
+      .join("");
+
+    return `<optgroup label="${category}">${options}</optgroup>`;
+  });
+
+  return `
+    <select name="programme_exercises" class="programme_move_dropdown pointer">
+      <option value="" ${!selectedValueId ? "selected" : ""}>--Choose an exercise--</option>
+      ${optgroups.join("")}
+    </select>
+  `;
+}
+
+function PROGRAMME_MOVE_LABEL(dropdown, count, comment, load) {
+  return `
+    <div class="programme_move_label ${load ? "okselection" : "noselection"}">
+      <div class="programme_drag_handle drag-handle" title="Drag to reorder">⋮⋮</div>
+      <div class="programme_select">${dropdown}</div>
+      <div class="programme_counter">
+        <button class="programme_minus_btn" type="button">-</button>
+        <span class="programme_move_count">${count || 1}</span>
+        <button class="programme_plus_btn" type="button">+</button>
+      </div>
+      <input
+        type="text"
+        class="programme_move_comment"
+        value="${comment || ""}"
+        placeholder="Comment (optional)"
+      />
+      <button class="programme_remove_btn" type="button">🗑</button>
+    </div>
+  `;
+}
+
+function PROGRAMME_EXERCISE_CARD(exercise, index) {
+  const media =
+    exercise.media && exercise.media.trim() !== ""
+      ? `<img src="${exercise.media}" alt="${exercise.name}" />`
+      : `<div class="programme_fallback_image">NO IMAGE</div>`;
+
+  return `
+    <div class="programme_exercise_card" data-index="${index}">
+      <label class="programme_check_wrap">
+        <input type="checkbox" class="programme_exercise_check" />
+        <span class="programme_checkmark"></span>
+      </label>
+      <div class="programme_card_media">${media}</div>
+      <div class="programme_card_body">
+        <h3>${exercise.exerciseName || exercise.name}</h3>
+        <p class="programme_card_subtitle">${exercise.count} reps</p>
+        <p class="programme_card_comment">${exercise.comment || "No comment"}</p>
+      </div>
+    </div>
+  `;
+}

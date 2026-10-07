@@ -1,0 +1,486 @@
+/*================================*/
+/*================================*/
+/* PROGRAMME BASED TRAINING STYLE */
+/*================================*/
+/*================================*/
+
+/* =========================================
+   PROGRAMME SECTION - PROFESSIONAL UI
+   ========================================= */
+
+.programme_import_screen {
+  min-height: calc(100vh - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 110px 20px 32px;
+}
+
+.programme_import_panel {
+  width: min(980px, 100%);
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 28px;
+  padding: clamp(20px, 2vw, 36px);
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.programme_import_panel h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.programme_import_box {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  margin-top: 16px;
+}
+
+.programme_import_box label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  margin-bottom: 10px;
+}
+
+.programme_import_box textarea {
+  width: 100%;
+  min-height: 120px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(2, 6, 23, 0.45);
+  color: #f8fafc;
+  border-radius: 14px;
+  padding: 14px 16px;
+  resize: vertical;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.programme_import_box textarea:focus {
+  outline: none;
+  border-color: rgba(110, 231, 183, 0.8);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+}
+
+.programme_import_box button {
+  margin-top: 14px;
+  min-width: 180px;
+}
+
+.programme_settings {
+  position: sticky;
+  top: 88px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 22px;
+  padding: 18px 20px;
+  margin: 18px auto 18px;
+  max-width: 1100px;
+  box-shadow: 0 18px 38px rgba(2, 6, 23, 0.24);
+}
+
+.programme_title_wrapper h2 {
+  margin: 0;
+  font-size: clamp(1.7rem, 2.8vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.programme_info {
+  margin-top: 12px;
+  color: rgba(226, 232, 240, 0.82);
+  font-size: 0.97rem;
+}
+
+.programme_total_count_box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(125, 211, 252, 0.26);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: #dbeafe;
+  font-weight: 700;
+}
+
+.programme_total_count_box strong {
+  font-size: 1.1rem;
+  color: #f8fafc;
+}
+
+.programme_state_buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.programme_state_buttons .btn {
+  min-width: 110px;
+}
+
+#programme_moves_selection {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 6px 0 18px;
+}
+
+.programme_move_label {
+  display: grid;
+  grid-template-columns:
+    38px minmax(220px, 1.4fr) 120px minmax(180px, 1.4fr)
+    42px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.12);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.programme_move_label:hover {
+  transform: translateY(-1px);
+  border-color: rgba(125, 211, 252, 0.32);
+  box-shadow: 0 18px 32px rgba(2, 6, 23, 0.18);
+}
+
+.programme_drag_handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(226, 232, 240, 0.75);
+  font-size: 1.15rem;
+  cursor: grab;
+  user-select: none;
+}
+
+.programme_select {
+  width: 100%;
+}
+
+.programme_move_dropdown {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(2, 6, 23, 0.48);
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+.programme_move_dropdown:focus {
+  outline: none;
+  border-color: rgba(110, 231, 183, 0.8);
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+}
+
+.programme_counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.programme_minus_btn,
+.programme_plus_btn,
+.programme_remove_btn {
+  border: none;
+  background: transparent;
+  color: #f8fafc;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.programme_move_count {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.programme_move_comment {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(2, 6, 23, 0.48);
+  color: #f8fafc;
+  font-size: 0.94rem;
+}
+
+.programme_move_comment::placeholder {
+  color: rgba(226, 232, 240, 0.52);
+}
+
+.programme_move_comment:focus {
+  outline: none;
+  border-color: rgba(14, 165, 233, 0.8);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+}
+
+.programme_remove_btn {
+  color: #fda4af;
+  font-size: 1.2rem;
+}
+
+.programme_move_label.okselection {
+  border-color: rgba(52, 211, 153, 0.42);
+  box-shadow: 0 16px 28px rgba(16, 185, 129, 0.12);
+}
+
+.programme_move_label.noselection {
+  border-color: rgba(148, 163, 184, 0.12);
+}
+
+.form_buttons {
+  max-width: 1100px;
+  margin: 0 auto 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form_buttons .btn {
+  min-width: 180px;
+}
+
+.programme_training_wrapper {
+  max-width: 1200px;
+  padding: 0 20px 30px;
+}
+
+.programme_training_wrapper h2 {
+  margin: 0 0 18px;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: -0.05em;
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.programme_training_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.programme_exercise_card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(15, 23, 42, 0.76);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 22px 40px rgba(2, 6, 23, 0.26);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.programme_exercise_card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(125, 211, 252, 0.34);
+  box-shadow: 0 24px 45px rgba(2, 6, 23, 0.32);
+}
+
+.programme_card_media {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.programme_card_media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.programme_exercise_card:hover .programme_card_media img {
+  transform: scale(1.02);
+}
+
+.programme_exercise_card.programme_completed .programme_card_media img {
+  filter: brightness(0.45) grayscale(0.7);
+}
+
+.programme_check_wrap {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.programme_check_wrap input {
+  accent-color: #34d399;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.programme_card_body {
+  padding: 16px 16px 18px;
+}
+
+.programme_card_body h3 {
+  margin: 0 0 8px;
+  color: #f8fafc;
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.programme_card_subtitle {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  font-weight: 700;
+}
+
+.programme_card_comment {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.8);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.programme_fallback_image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(14, 165, 233, 0.28),
+    rgba(15, 23, 42, 0.9)
+  );
+  color: #e2e8f0;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ----------------------------
+   responsive adjustments
+---------------------------- */
+
+@media (max-width: 767px) {
+  .programme_import_screen {
+    padding-top: 96px;
+  }
+
+  .programme_settings {
+    top: 74px;
+    padding: 16px 16px;
+  }
+
+  .programme_move_label {
+    grid-template-columns: 28px minmax(0, 1fr) 96px minmax(0, 1fr) 32px;
+    gap: 8px;
+    padding: 10px 10px;
+  }
+
+  .programme_move_dropdown,
+  .programme_move_comment {
+    padding: 10px 12px;
+    font-size: 0.92rem;
+  }
+
+  .programme_counter {
+    gap: 8px;
+    padding: 7px 9px;
+  }
+
+  .form_buttons {
+    justify-content: stretch;
+  }
+
+  .form_buttons .btn {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .programme_move_label {
+    grid-template-columns: 28px 1fr;
+    grid-template-areas:
+      "drag select"
+      "counter comment"
+      "counter remove";
+  }
+
+  .programme_drag_handle {
+    grid-area: drag;
+  }
+
+  .programme_select {
+    grid-area: select;
+  }
+
+  .programme_counter {
+    grid-area: counter;
+  }
+
+  .programme_move_comment {
+    grid-area: comment;
+  }
+
+  .programme_remove_btn {
+    grid-area: remove;
+    justify-self: end;
+  }
+
+  .programme_training_wrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .programme_card_media {
+    height: 180px;
+  }
+}

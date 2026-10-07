@@ -119,6 +119,149 @@ const WARNING_TRIANGLE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" hei
 </svg>`;
 
 // OTHER GLOBAL COMPONENTS
+const NAVBAR_CONFIG = {
+  session: {
+    homeAction: "ImportWorkoutScreen()",
+    homeLabel: "Session Home",
+    savedAction: "SavedSessionsScreen('session')",
+    savedLabel: "Saved Sessions",
+  },
+
+  programme: {
+    homeAction: "ImportProgrammeScreen()",
+    homeLabel: "Programme Home",
+    savedAction: "SavedSessionsScreen('programme')",
+    savedLabel: "Saved Programmes",
+  },
+};
+
+const NAVBAR = (type) => {
+  if (type === "brand-only") {
+    $("#nav-root").append(`
+            <nav id="my_navbar" class="app-navbar">
+                <div class="navbar-inner">
+                    <button
+                        type="button"
+                        class="navbar-brand"
+                        onclick="goBackHome()"
+                        aria-label="Go to home"
+                    >
+                        <img
+                            src="../images/favicon.png"
+                            alt="Training"
+                        >
+                    </button>
+                </div>
+            </nav>`);
+  }
+
+  const config = NAVBAR_CONFIG[type];
+
+  if (!config) return "";
+
+  $("#nav-root").append(`<nav id="my_navbar" class="app-navbar">
+            <div class="navbar-inner">
+
+                <button
+                    type="button"
+                    class="navbar-brand"
+                    onclick="goBackHome()"
+                    aria-label="Go to home"
+                >
+                    <img
+                        src="../images/favicon.png"
+                        alt="Training"
+                    >
+                </button>
+
+                <details id="navbar_menu" class="navbar-menu">
+
+                    <summary class="navbar-menu-toggle">
+                        <span class="menu-label">MENU</span>
+
+                        <span class="menu-icon" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </summary>
+
+                    <div id="navbar_menu_items" class="navbar-menu-items">
+
+                        <button
+                            type="button"
+                            class="navbar-menu-item"
+                            onclick="goBackHome()"
+                        >
+                            <span class="menu-item-index">01</span>
+                            <span>Home</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="navbar-menu-item"
+                            onclick="${config.homeAction}"
+                        >
+                            <span class="menu-item-index">02</span>
+                            <span>${config.homeLabel}</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="navbar-menu-item"
+                            onclick="MoveOverviewScreen('moves')"
+                        >
+                            <span class="menu-item-index">03</span>
+                            <span>Moves Overview</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="navbar-menu-item"
+                            onclick="MoveOverviewScreen('exercises')"
+                        >
+                            <span class="menu-item-index">04</span>
+                            <span>Exercises Overview</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            class="navbar-menu-item"
+                            onclick="${config.savedAction}"
+                        >
+                            <span class="menu-item-index">05</span>
+                            <span>${config.savedLabel}</span>
+                        </button>
+
+                    </div>
+                </details>
+
+            </div>
+        </nav>
+    `);
+};
+
+const FOOTER = () => {
+  $("#footer-root").append(`<footer class="app-footer">
+    <div class="footer-inner">
+        <span class="footer-copy">
+            © ${new Date().getFullYear()}
+        </span>
+
+        <span class="footer-separator" aria-hidden="true">·</span>
+
+        <a
+            class="footer-link"
+            href="https://github.com/andreadg-dev"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            @andreadg-dev
+        </a>
+    </div>
+</footer>`);
+};
+
 const SEPARATOR = `<div class="separator"></div>`;
 
 const NOMEDIA_COMPONENT = `<div class="move_overview_content_nomedia">NO MEDIA AVAILABLE</div>`;
@@ -508,10 +651,13 @@ function PROGRAMME_FORM_BUTTONS() {
 }
 
 function generateProgrammeDropdown(selectedValueId) {
-  const grouped = EXERCISES_SORTED.reduce((acc, exercise) => {
-    (acc[exercise.category] = acc[exercise.category] || []).push(exercise);
-    return acc;
-  }, {});
+  const grouped = [...EXERCISES_SORTED, ...MOVEMENTS_SORTED].reduce(
+    (acc, exercise) => {
+      (acc[exercise.category] = acc[exercise.category] || []).push(exercise);
+      return acc;
+    },
+    {},
+  );
 
   const optgroups = Object.entries(grouped).map(([category, exercises]) => {
     const options = exercises

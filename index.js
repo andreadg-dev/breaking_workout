@@ -1102,16 +1102,6 @@ function removeSavedSession(element, storageKey, mode) {
   SavedSessionsScreen(mode);
 }
 
-//================================
-// FOOTER FUNCTIONS
-//================================
-// Set copyright in the footer
-function setCopyright() {
-  $("#copyright").html(
-    `Copyright ©${new Date().getFullYear()} ${$("#copyright").html()}`,
-  );
-}
-
 //pushing again once again
 
 //=====================================

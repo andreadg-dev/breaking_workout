@@ -1406,7 +1406,7 @@ function newProgrammeSessionObject() {
       const selectedValue = $(item).val();
       const exerciseId = selectedValue.split("-")[0];
 
-      const selectedExercise = EXERCISES.find(
+      const selectedExercise = [...EXERCISES, ...MOVEMENTS].find(
         (exercise) => exercise.id === exerciseId,
       );
 
@@ -1489,70 +1489,68 @@ function ProgrammeSelectionScreen(sessionBase64String) {
       ghostClass: "drag-ghost",
     });
 
-    $(document).on("change", ".programme_move_dropdown", function () {
-      updateProgrammeSelectionStyling(this);
-      updateProgrammeTotals();
-    });
+    $(document)
+      .off(".programmeSelection")
+      .on("change.programmeSelection", ".programme_move_dropdown", function () {
+        updateProgrammeSelectionStyling(this);
+        updateProgrammeTotals();
+      })
+      .on("click.programmeSelection", ".add_programme_move", function () {
+        if (
+          Number($("#programme_total_count").html()) >=
+          THRESHOLDS.maxExercisesInWorkout
+        ) {
+          newErrorPopup(
+            `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises in one programme.`,
+          );
+          return;
+        }
 
-    $(document).on("click", ".add_programme_move", function () {
-      if (
-        Number($("#programme_total_count").html()) >=
-        THRESHOLDS.maxExercisesInWorkout
-      ) {
-        newErrorPopup(
-          `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises in one programme.`,
+        $("#programme_moves_selection").append(
+          PROGRAMME_MOVE_LABEL(generateProgrammeDropdown(), 1, "", null),
         );
-        return;
-      }
 
-      $("#programme_moves_selection").append(
-        PROGRAMME_MOVE_LABEL(generateProgrammeDropdown(), 1, "", null),
-      );
+        updateProgrammeTotals();
+      })
+      .on("click.programmeSelection", ".programme_remove_btn", function () {
+        $(this).closest(".programme_move_label").remove();
+        updateProgrammeTotals();
+      })
+      .on("click.programmeSelection", ".programme_plus_btn", function () {
+        const countEl = $(this)
+          .closest(".programme_counter")
+          .find(".programme_move_count");
+        const current = Number(countEl.html()) || 1;
 
-      updateProgrammeTotals();
-    });
+        if (
+          Number($("#programme_total_count").html()) >=
+          THRESHOLDS.maxExercisesInWorkout
+        ) {
+          newErrorPopup(
+            `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises in one programme.`,
+          );
+          return;
+        }
 
-    $(document).on("click", ".programme_remove_btn", function () {
-      $(this).closest(".programme_move_label").remove();
-      updateProgrammeTotals();
-    });
+        countEl.html(current + 1);
+        updateProgrammeTotals();
+      })
+      .on("click.programmeSelection", ".programme_minus_btn", function () {
+        const countEl = $(this)
+          .closest(".programme_counter")
+          .find(".programme_move_count");
+        const current = Number(countEl.html()) || 1;
 
-    $(document).on("click", ".programme_plus_btn", function () {
-      const countEl = $(this)
-        .closest(".programme_counter")
-        .find(".programme_move_count");
-      const current = Number(countEl.html()) || 1;
+        if (current <= THRESHOLDS.minExerciseCount) {
+          newErrorPopup(
+            `You cannot choose a number less than ${THRESHOLDS.minExerciseCount}`,
+          );
+          return;
+        }
 
-      if (
-        Number($("#programme_total_count").html()) >=
-        THRESHOLDS.maxExercisesInWorkout
-      ) {
-        newErrorPopup(
-          `You cannot add more than ${THRESHOLDS.maxExercisesInWorkout} exercises in one programme.`,
-        );
-        return;
-      }
-
-      countEl.html(current + 1);
-      updateProgrammeTotals();
-    });
-
-    $(document).on("click", ".programme_minus_btn", function () {
-      const countEl = $(this)
-        .closest(".programme_counter")
-        .find(".programme_move_count");
-      const current = Number(countEl.html()) || 1;
-
-      if (current <= THRESHOLDS.minExerciseCount) {
-        newErrorPopup(
-          `You cannot choose a number less than ${THRESHOLDS.minExerciseCount}`,
-        );
-        return;
-      }
-
-      countEl.html(current - 1);
-      updateProgrammeTotals();
-    });
+        countEl.html(current - 1);
+        updateProgrammeTotals();
+      });
   } catch (error) {
     newErrorPopup(
       `An unexpected error occurred while generating the Programme page:<br/><br/>${error}`,

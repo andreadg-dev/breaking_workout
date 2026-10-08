@@ -409,10 +409,6 @@
 ---------------------------- */
 
 @media (max-width: 767px) {
-  .programme_import_screen {
-    /* padding-top: 96px; */
-  }
-
   .programme_settings {
     top: 74px;
     padding: 16px 16px;

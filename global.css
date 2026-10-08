@@ -46,6 +46,12 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  box-sizing: border-box;
   color: var(--main-font-color);
   font-family: var(--main-font-family);
   font-size: 1.2rem;
@@ -364,8 +370,8 @@ body {
 }
 
 #root {
-  margin: 0 auto;
-  padding: 3rem 1rem 1rem;
+  margin: 0;
+  padding: 2rem 1rem 0;
   display: flex;
   justify-content: center;
   gap: 1.5rem;
@@ -748,6 +754,10 @@ body {
   background-color: #4e4c4c2b;
 }
 
+#workout_settings {
+  padding-top: 2rem;
+}
+
 /*===========================*/
 /*Moves config header*/
 /*===========================*/
@@ -905,7 +915,7 @@ div.noselection:hover {
 
 #form_buttons {
   margin: auto;
-  margin-bottom: 70px;
+  margin-bottom: 2rem;
 }
 
 .add_btn {
@@ -1219,11 +1229,17 @@ div.noselection:hover {
 /*================================*/
 /*================================*/
 
-#footer-root {
+/* #footer-root {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+} */
+
+#footer-root {
+  margin-top: auto;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .app-footer {

@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 110px 20px 32px;
+  /* padding: 110px 20px 32px; */
 }
 
 .programme_import_panel {
@@ -410,7 +410,7 @@
 
 @media (max-width: 767px) {
   .programme_import_screen {
-    padding-top: 96px;
+    /* padding-top: 96px; */
   }
 
   .programme_settings {
